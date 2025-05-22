@@ -1,7 +1,8 @@
 namespace GameBoxSdk.Runtime.UI.Views
 {
-    using GameBoxSdk.Runtime.Database;
     using UnityEngine;
+    
+    using GameBoxSdk.Runtime.Database;
 
     [CreateAssetMenu(fileName = VIEWS_DATABASE_ASSET_NAME, menuName = "Database/ViewsDatabase")]
     public class ViewsDatabase : FileDatabase<BaseView>
@@ -16,8 +17,8 @@ namespace GameBoxSdk.Runtime.UI.Views
         public LayerMask ViewsLayerMask => viewsLayerMask;
         public override string FileDatabasePathScriptableObjectPath => VIEWS_DATABASE_SCRIPTABLE_OBJECT_PATH;
 
-        protected override string TemplateIdsContainerScriptPath => "Assets/Scripts/Editor/Database/Templates/TemplateViewIds.txt";
-        protected override string IdsContainerClassScriptPath => "Assets/Scripts/Runtime/UI/Views/ViewIds.cs";
+        protected override string TemplateIdsContainerScriptPath => "Assets/Scripts/GameBoxSdk/Editor/Database/Templates/TemplateViewIds.txt";
+        protected override string IdsContainerClassScriptPath => "Assets/Scripts/GameBoxSdk/Runtime/UI/Views/ViewIds.cs";
         protected override string TemplateIdVariableSlot => "#ViewId#";
         protected override string IdScriptLineStart => "#";
         protected override string IdScriptLineEnd => ";";

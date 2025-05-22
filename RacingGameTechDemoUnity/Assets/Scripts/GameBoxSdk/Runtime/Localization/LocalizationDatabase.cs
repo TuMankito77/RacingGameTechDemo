@@ -13,8 +13,8 @@ namespace GameBoxSdk.Runtime.Localization
 
         public override string FileDatabasePathScriptableObjectPath => LOCALIZATION_DATABASE_SCRIPTABLE_OBJECT_PATH;
 
-        protected override string TemplateIdsContainerScriptPath => "Assets/Scripts/Editor/Database/Templates/TemplateLanguageIds.txt";
-        protected override string IdsContainerClassScriptPath => "Assets/Scripts/Runtime/Localization/LanguageIds.cs";
+        protected override string TemplateIdsContainerScriptPath => "Assets/Scripts/GameBoxSdk/Editor/Database/Templates/TemplateLanguageIds.txt";
+        protected override string IdsContainerClassScriptPath => "Assets/Scripts/GameBoxSdk/Runtime/Localization/LanguageIds.cs";
         protected override string TemplateIdVariableSlot => "#LanguageId#";
         protected override string IdScriptLineStart => "#";
         protected override string IdScriptLineEnd => ";";
