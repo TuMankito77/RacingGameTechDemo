@@ -4,6 +4,7 @@ namespace RacingGameDemo.Runtime.UI.Views
 
     using GameBoxSdk.Runtime.UI.Views;
     using GameBoxSdk.Runtime.UI.CoreElements;
+    using GameBoxSdk.Runtime.Utils;
 
     public class MainMenuView : BaseView
     {
@@ -41,22 +42,22 @@ namespace RacingGameDemo.Runtime.UI.Views
 
         private void OnStartRaceButtonPressed()
         {
-
+            LoggerUtil.Log("Start race button pressed.");
         }
 
         private void OnOptionsButtonPressed()
         {
-
+            LoggerUtil.Log("Start options button pressed.");
         }
-        
+
         private void OnGarageButtonPressed()
         {
-            
+            LoggerUtil.Log("Start race button pressed.");
         }
 
         private void OnQuitButtonPressed()
         {
-
+            LoggerUtil.Log("Start race button pressed.");
         }
     }
 }
