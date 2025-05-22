@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5412886895581666035}
   - component: {fileID: 606902464411616609}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MiddleContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,7 +66,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3102190536130943341}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: RightSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1527867197284080092}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LeftSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139,7 +139,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6860401274967776625}
   - component: {fileID: 796097485608807973}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LeftFiller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -195,7 +195,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6588638814914489362}
   - component: {fileID: 7463623828384710958}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: RightFiller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -252,7 +252,7 @@ GameObject:
   - component: {fileID: 2879427437666107613}
   - component: {fileID: 6654482605026977189}
   - component: {fileID: 1541871481355740520}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -326,7 +326,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2858320460390297991}
   - component: {fileID: 7651250783705696756}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: SizeControl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -391,7 +391,7 @@ GameObject:
   m_Component:
   - component: {fileID: 15458229704075382}
   - component: {fileID: 8982937954590448711}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UpperFiller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -447,7 +447,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2417063222309641567}
   - component: {fileID: 4911321098068660726}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LowerFiller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -502,7 +502,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5321267115922886440}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -542,7 +542,7 @@ GameObject:
   - component: {fileID: 6148250580980848562}
   - component: {fileID: 7609440448646491796}
   - component: {fileID: 4848969130663444007}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: BaseMenuView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -589,18 +589,18 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -699,7 +699,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4067452778716648301}
   - component: {fileID: 5215631855985588921}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MiddleContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -765,7 +765,7 @@ GameObject:
   - component: {fileID: 1420005327204269249}
   - component: {fileID: 6589021144260814482}
   - component: {fileID: 2652380115844452293}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -840,7 +840,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7830855307443139741}
   - component: {fileID: 3634467716150747501}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: HorizontalSides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -905,7 +905,7 @@ GameObject:
   - component: {fileID: 7993623920814415562}
   - component: {fileID: 2694815229963367176}
   - component: {fileID: 1389966196324952393}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: InputBlockerImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
