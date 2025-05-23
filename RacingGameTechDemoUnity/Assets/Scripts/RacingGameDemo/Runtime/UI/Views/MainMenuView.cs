@@ -24,6 +24,7 @@ namespace RacingGameDemo.Runtime.UI.Views
 
         protected override void Awake()
         {
+            base.Awake();
             startRaceButton.onButtonPressed += OnStartRaceButtonPressed;
             optionsButton.onButtonPressed += OnOptionsButtonPressed;
             garageButton.onButtonPressed += OnGarageButtonPressed;
@@ -32,6 +33,7 @@ namespace RacingGameDemo.Runtime.UI.Views
 
         protected override void OnDestroy()
         {
+            base.OnDestroy();
             startRaceButton.onButtonPressed -= OnStartRaceButtonPressed;
             optionsButton.onButtonPressed -= OnOptionsButtonPressed;
             garageButton.onButtonPressed -= OnGarageButtonPressed;
