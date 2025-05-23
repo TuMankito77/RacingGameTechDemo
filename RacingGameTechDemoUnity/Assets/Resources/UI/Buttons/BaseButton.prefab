@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 8411723986827069517}
   - component: {fileID: 1402709501871151221}
   - component: {fileID: 4116343465198919771}
+  - component: {fileID: -7322968589048252705}
   - component: {fileID: 2924856091024036745}
   - component: {fileID: 8952064448334775435}
   - component: {fileID: 1768779291248788391}
@@ -236,6 +237,20 @@ MonoBehaviour:
   selectableElementNeighborGroups: []
   button: {fileID: 1402709501871151221}
   triggerButtonActionBeforeAnimation: 1
+--- !u!114 &-7322968589048252705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6591105817601928183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebe2429cd0155a944bfde574eff900bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseButton: {fileID: 4116343465198919771}
+  clipId: ButtonPressed
 --- !u!114 &2924856091024036745
 MonoBehaviour:
   m_ObjectHideFlags: 0
