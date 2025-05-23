@@ -21,7 +21,7 @@ namespace GameBoxSdk.Runtime.UI.Views
         public event Action onTransitionOutFinished;
 
         protected AudioManager audioManager = null;
-        private BaseButton[] buttons = new BaseButton[0];
+        private ButtonAudioPlayer[] buttonAudioPlayers = new ButtonAudioPlayer[0];
         private SelectableElement[] selectableElements = new SelectableElement[0];
         private IViewAnimator viewAnimator = null;
         private int interactableGroupId = -1;
@@ -38,13 +38,8 @@ namespace GameBoxSdk.Runtime.UI.Views
 
         protected virtual void Awake()
         {
-            buttons = GetComponentsInChildren<BaseButton>();
+            buttonAudioPlayers = GetComponentsInChildren<ButtonAudioPlayer>();
             selectableElements = GetComponentsInChildren<SelectableElement>();
-
-            foreach(BaseButton button in buttons)
-            {
-                button.onSubmit += OnButtonSubmit;
-            }
 
             viewAnimator = GetComponent<IViewAnimator>();
 
@@ -55,13 +50,8 @@ namespace GameBoxSdk.Runtime.UI.Views
             }
         }
 
-
         protected virtual void OnDestroy()
         {
-            foreach(BaseButton button in buttons)
-            {
-                button.onSubmit -= OnButtonSubmit;
-            }
 
             if (viewAnimator != null)
             {
@@ -88,6 +78,11 @@ namespace GameBoxSdk.Runtime.UI.Views
             CanvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             audioManager = sourceAudioManager;
             eventSystem = sourceEventSystem;
+
+            foreach(ButtonAudioPlayer buttonAudioPlayer in buttonAudioPlayers)
+            {
+                buttonAudioPlayer.Initialize(sourceAudioManager);
+            }
 
             foreach(LocalizedText localizedText in GetComponentsInChildren<LocalizedText>(includeInactive: true))
             {
@@ -161,11 +156,6 @@ namespace GameBoxSdk.Runtime.UI.Views
                     break;
                 }
             }
-        }
-
-        private void OnButtonSubmit()
-        {
-            audioManager.PlayGeneralClip(ClipIds.BUTTON_CLICK_CLIP);
         }
 
         private void OnTransitionOutAnimatonCompleted()
