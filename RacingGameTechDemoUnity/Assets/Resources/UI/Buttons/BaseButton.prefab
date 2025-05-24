@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseButton: {fileID: 4116343465198919771}
-  clipId: ButtonPressed
+  clipId: 1
 --- !u!114 &2924856091024036745
 MonoBehaviour:
   m_ObjectHideFlags: 0
