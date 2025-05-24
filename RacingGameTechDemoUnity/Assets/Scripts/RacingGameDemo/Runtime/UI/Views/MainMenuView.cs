@@ -20,27 +20,23 @@ namespace RacingGameDemo.Runtime.UI.Views
         [SerializeField]
         private BaseButton quitButton = null;
 
-        #region Unity Methods
-
-        protected override void Awake()
+        public override void TransitionIn(int sourceInteractableGroupId)
         {
-            base.Awake();
+            base.TransitionIn(sourceInteractableGroupId);
             startRaceButton.onButtonPressed += OnStartRaceButtonPressed;
             optionsButton.onButtonPressed += OnOptionsButtonPressed;
             garageButton.onButtonPressed += OnGarageButtonPressed;
             quitButton.onButtonPressed += OnQuitButtonPressed;
         }
 
-        protected override void OnDestroy()
+        public override void TransitionOut()
         {
-            base.OnDestroy();
+            base.TransitionOut();
             startRaceButton.onButtonPressed -= OnStartRaceButtonPressed;
             optionsButton.onButtonPressed -= OnOptionsButtonPressed;
             garageButton.onButtonPressed -= OnGarageButtonPressed;
             quitButton.onButtonPressed -= OnQuitButtonPressed;
         }
-
-        #endregion
 
         private void OnStartRaceButtonPressed()
         {
