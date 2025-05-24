@@ -9,9 +9,8 @@ namespace GameBoxSdk.Runtime.UI.CoreElements
         [SerializeField]
         private BaseButton baseButton = null;
 
-        //To-do: Make this value be part of a drop-down that will allow us to choose the value
         [SerializeField]
-        private string clipId = string.Empty;
+        private ClipIds clipId = ClipIds.None;
 
         private AudioManager audioManager = null;
 

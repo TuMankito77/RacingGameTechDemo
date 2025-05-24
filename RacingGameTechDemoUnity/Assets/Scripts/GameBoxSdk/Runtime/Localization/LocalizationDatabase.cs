@@ -17,7 +17,7 @@ namespace GameBoxSdk.Runtime.Localization
         protected override string IdsContainerClassScriptPath => "Assets/Scripts/GameBoxSdk/Runtime/Localization/LanguageIds.cs";
         protected override string TemplateIdVariableSlot => "#LanguageId#";
         protected override string IdScriptLineStart => "#";
-        protected override string IdScriptLineEnd => ";";
+        protected override string IdScriptLineEnd => ",";
     }
 }
 

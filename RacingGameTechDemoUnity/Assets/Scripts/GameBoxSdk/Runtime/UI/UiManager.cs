@@ -68,7 +68,7 @@ namespace GameBoxSdk.Runtime.UI
             return true;
         }
 
-        public BaseView DisplayView(string viewId, bool disableCurrentInteractableGroup, ViewInjectableData viewInjectableData = null)
+        public BaseView DisplayView(ViewIds viewId, bool disableCurrentInteractableGroup, ViewInjectableData viewInjectableData = null)
         {
             if(disableCurrentInteractableGroup)
             {
@@ -87,7 +87,7 @@ namespace GameBoxSdk.Runtime.UI
                 currentInteractbleGroupId++;
             }
 
-            BaseView viewFound = GameObject.Instantiate(viewsDatabase.GetFile(viewId), uiManagerGO.transform);
+            BaseView viewFound = GameObject.Instantiate(viewsDatabase.GetFile(viewId.ToString()), uiManagerGO.transform);
             viewFound.Initialize(uiCamera, audioManager, viewInjectableData, localizationManager, eventSystem);
             //NOTE: This will update the values like the width and height so that they do not appear as zero,
             //dunno how I will remind this to myself -_-, BUT remember, we have to do this before trying to access any RectTransform values
@@ -99,9 +99,9 @@ namespace GameBoxSdk.Runtime.UI
             return viewFound;
         }
 
-        public BaseView GetTopStackView(string viewId)
+        public BaseView GetTopStackView(ViewIds viewId)
         {
-            Type viewType = viewsDatabase.GetFile(viewId).GetType();
+            Type viewType = viewsDatabase.GetFile(viewId.ToString()).GetType();
 
             for (int i = viewsOpened.Count - 1; i >= 0; i--)
             {
@@ -120,9 +120,9 @@ namespace GameBoxSdk.Runtime.UI
             return viewsOpened[viewsOpened.Count - 1];
         }
 
-        public void RemoveView(string viewId)
+        public void RemoveView(ViewIds viewId)
         {
-            Type viewType = viewsDatabase.GetFile(viewId).GetType();
+            Type viewType = viewsDatabase.GetFile(viewId.ToString()).GetType();
             
             if(!viewsOpened.Exists((view) => view.GetType() == viewType))
             {

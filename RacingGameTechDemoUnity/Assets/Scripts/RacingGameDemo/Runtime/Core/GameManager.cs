@@ -44,7 +44,7 @@ namespace RacingGameDemo.Runtime.Core
         private void OnSystemsInitialized()
         {
             uiManager = systemsInitializer.GetSystem<UiManager>();
-            uiManager.DisplayView(ViewIds.MAIN_MENU, disableCurrentInteractableGroup: false);
+            uiManager.DisplayView(ViewIds.MainMenu, disableCurrentInteractableGroup: false);
         }
     }
 }

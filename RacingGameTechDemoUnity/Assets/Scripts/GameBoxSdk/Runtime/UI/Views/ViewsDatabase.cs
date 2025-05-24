@@ -21,7 +21,7 @@ namespace GameBoxSdk.Runtime.UI.Views
         protected override string IdsContainerClassScriptPath => "Assets/Scripts/GameBoxSdk/Runtime/UI/Views/ViewIds.cs";
         protected override string TemplateIdVariableSlot => "#ViewId#";
         protected override string IdScriptLineStart => "#";
-        protected override string IdScriptLineEnd => ";";
+        protected override string IdScriptLineEnd => ",";
     }
 }
 

@@ -17,6 +17,6 @@ namespace GameBoxSdk.Runtime.Sound
         protected override string IdsContainerClassScriptPath => "Assets/Scripts/GameBoxSdk/Runtime/Sound/ClipIds.cs";
         protected override string TemplateIdVariableSlot => "#ClipId#";
         protected override string IdScriptLineStart => "#";
-        protected override string IdScriptLineEnd => ";";
+        protected override string IdScriptLineEnd => ",";
     }
 }

@@ -114,7 +114,7 @@ namespace GameBoxSdk.Runtime.Database
 
         #endregion
 
-        public void GenerateIdsContainerClassFile()
+        public void GenerateEnumIdsContainerClassFile()
         {
             TextAsset scriptTemplate = UnityEditor.AssetDatabase.LoadAssetAtPath<TextAsset>(TemplateIdsContainerScriptPath);
             string templateText = scriptTemplate.text;
@@ -131,7 +131,7 @@ namespace GameBoxSdk.Runtime.Database
 
             foreach (string uniqueFileId in idFileLookup.Keys)
             {
-                string fileIdVariableDeclaration = $"public const string {uniqueFileId.ToConstantFormat()} = \"{uniqueFileId}\"";
+                string fileIdVariableDeclaration = $"{uniqueFileId}";
                 string keyConstant = customDataConstantTemplate.Replace(TemplateIdVariableSlot, fileIdVariableDeclaration);
                 customDataConstants.Append(keyConstant);
                 customDataConstants.Append(currentIndex == idFileLookup.Count - 1 ? string.Empty : "\n\t\t");

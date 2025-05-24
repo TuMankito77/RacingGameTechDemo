@@ -69,9 +69,9 @@ namespace GameBoxSdk.Runtime.Sound
             return true;
         }
 
-        public void PlayGameplayClip(string clipId)
+        public void PlayGameplayClip(ClipIds clipId)
         {
-            AudioClip audioClip = clipsDatabase.GetFile(clipId);
+            AudioClip audioClip = clipsDatabase.GetFile(clipId.ToString());
             gameplayAudioPlayer.PlayClipOneShot(audioClip);
         }
 
@@ -85,9 +85,9 @@ namespace GameBoxSdk.Runtime.Sound
             gameplayAudioPlayer.UnPause();
         }
 
-        public void PlayGeneralClip(string clipId)
+        public void PlayGeneralClip(ClipIds clipId)
         {
-            AudioClip audioClip = clipsDatabase.GetFile(clipId);
+            AudioClip audioClip = clipsDatabase.GetFile(clipId.ToString());
             generalAudioPlayer.PlayClipOneShot(audioClip);
         }
 
@@ -101,9 +101,9 @@ namespace GameBoxSdk.Runtime.Sound
             generalAudioPlayer.UnPause();
         }
 
-        public void PlayBackgroundMusic(string clipId)
+        public void PlayBackgroundMusic(ClipIds clipId)
         {
-            AudioClip audioClip = clipsDatabase.GetFile(clipId);
+            AudioClip audioClip = clipsDatabase.GetFile(clipId.ToString());
             backgroundMusicAudioPlayer.UpdateDefaultClip(audioClip);
             backgroundMusicAudioPlayer.Play();
             loopingClipsPlaying.Add(backgroundMusicAudioPlayer);
@@ -119,9 +119,9 @@ namespace GameBoxSdk.Runtime.Sound
             backgroundMusicAudioPlayer.Pause();
         }
 
-        public void PlayLoopingClip(int idRetreiver, string clipId, Transform parent = null, bool isSpatial = false, bool isGameplaySound = true)
+        public void PlayLoopingClip(int idRetreiver, ClipIds clipId, Transform parent = null, bool isSpatial = false, bool isGameplaySound = true)
         {
-            AudioClip audioClip = clipsDatabase.GetFile(clipId);
+            AudioClip audioClip = clipsDatabase.GetFile(clipId.ToString());
             AudioPlayer audioPlayer = null;
 
             //Checking if the object retrived from the dictionary was destroyed in the scene 

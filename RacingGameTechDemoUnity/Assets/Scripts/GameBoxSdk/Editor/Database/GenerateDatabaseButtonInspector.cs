@@ -15,7 +15,7 @@ namespace GameBoxSdk.Editor.Database
             
             if (GUILayout.Button($"Regenerate {fileIdsDatabase.GetType().Name} ID class file"))
             {
-                fileIdsDatabase.GenerateIdsContainerClassFile();
+                fileIdsDatabase.GenerateEnumIdsContainerClassFile();
             }
         }
     }
