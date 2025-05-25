@@ -20,6 +20,7 @@ namespace GameBoxSdk.Runtime.UI
     public class UiManager : BaseSystem, IInputControlableEntity
     {
         private const string EVENT_SYSTEM_PREFAB_PATH = "Ui/EventSystem";
+        private const int BACKGROUND_SORTING_GROUP = -1;
 
         private ViewsDatabase viewsDatabase = null;
         private GameObject uiManagerGO = null;
@@ -143,6 +144,7 @@ namespace GameBoxSdk.Runtime.UI
         private void RemoveView(BaseView view)
         {
             int viewIndex = view.Canvas.sortingOrder;
+            view.Canvas.sortingOrder = BACKGROUND_SORTING_GROUP;
             viewsOpened.Remove(view);
 
             void OnTransitionOutFinished()
