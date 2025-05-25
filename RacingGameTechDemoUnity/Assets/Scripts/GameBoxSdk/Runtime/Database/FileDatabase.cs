@@ -144,6 +144,11 @@ namespace GameBoxSdk.Runtime.Database
             {
                 File.SetAttributes(IdsContainerClassScriptPath, FileAttributes.Normal);
             }
+            /*else
+            {
+                File.Create(IdsContainerClassScriptPath);
+                File.SetAttributes(IdsContainerClassScriptPath, FileAttributes.Normal);
+            }*/
 
             File.WriteAllText(IdsContainerClassScriptPath, contextMenuScript);
             UnityEditor.AssetDatabase.Refresh();

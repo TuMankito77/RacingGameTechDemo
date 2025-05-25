@@ -4,12 +4,13 @@ namespace GameBoxSdk.Runtime.Localization
     
     using GameBoxSdk.Runtime.Database;
 
-    [CreateAssetMenu(fileName = LOCALIZATION_DATABASE_ASSET_NAME, menuName = "Database/LocalizationDatabase")]
+    [CreateAssetMenu(fileName = LOCALIZATION_DATABASE_ASSET_NAME, menuName = LOCALIZATION_DATABASE_MENU_NAME)]
     public class LocalizationDatabase : FileDatabase<TextAsset>
     {
         public const string LOCALIZATION_DATABASE_SCRIPTABLE_OBJECT_PATH = "GameBox/Localization/LocalizationDatabase";
 
         private const string LOCALIZATION_DATABASE_ASSET_NAME = "LocalizationDatabase";
+        private const string LOCALIZATION_DATABASE_MENU_NAME = "Database/LocalizationDatabase";
 
         public override string FileDatabasePathScriptableObjectPath => LOCALIZATION_DATABASE_SCRIPTABLE_OBJECT_PATH;
 

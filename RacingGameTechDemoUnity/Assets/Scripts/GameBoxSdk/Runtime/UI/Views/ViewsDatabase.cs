@@ -4,13 +4,14 @@ namespace GameBoxSdk.Runtime.UI.Views
     
     using GameBoxSdk.Runtime.Database;
 
-    [CreateAssetMenu(fileName = VIEWS_DATABASE_ASSET_NAME, menuName = "Database/ViewsDatabase")]
+    [CreateAssetMenu(fileName = VIEWS_DATABASE_ASSET_NAME, menuName = VIEWS_DATABASE_MENU_NAME)]
     public class ViewsDatabase : FileDatabase<BaseView>
     {
         public const string VIEWS_DATABASE_SCRIPTABLE_OBJECT_PATH = "GameBox/UI/ViewsDatabase";
 
         private const string VIEWS_DATABASE_ASSET_NAME = "ViewsDatabase";
-        
+        private const string VIEWS_DATABASE_MENU_NAME = "Database/ViewsDatabase";
+
         [SerializeField]
         private LayerMask viewsLayerMask = default(LayerMask);
 
