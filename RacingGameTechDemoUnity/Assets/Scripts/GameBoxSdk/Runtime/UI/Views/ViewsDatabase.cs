@@ -7,7 +7,7 @@ namespace GameBoxSdk.Runtime.UI.Views
     [CreateAssetMenu(fileName = VIEWS_DATABASE_ASSET_NAME, menuName = "Database/ViewsDatabase")]
     public class ViewsDatabase : FileDatabase<BaseView>
     {
-        public const string VIEWS_DATABASE_SCRIPTABLE_OBJECT_PATH = "UI/ViewsDatabase";
+        public const string VIEWS_DATABASE_SCRIPTABLE_OBJECT_PATH = "GameBox/UI/ViewsDatabase";
 
         private const string VIEWS_DATABASE_ASSET_NAME = "ViewsDatabase";
         

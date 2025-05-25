@@ -7,7 +7,7 @@ namespace GameBoxSdk.Runtime.Sound
     [CreateAssetMenu(fileName = CLIPS_DATABASE_ASSET_NAME, menuName = "Database/ClipsIdDatabase")]
     public class ClipsDatabase : FileDatabase<AudioClip>
     {
-        public const string CLIPS_DATABASE_SCRIPTABLE_OBJECT_PATH = "Sound/ClipsDatabase";
+        public const string CLIPS_DATABASE_SCRIPTABLE_OBJECT_PATH = "GameBox/Sound/ClipsDatabase";
         
         private const string CLIPS_DATABASE_ASSET_NAME = "ClipsDatabase";
 

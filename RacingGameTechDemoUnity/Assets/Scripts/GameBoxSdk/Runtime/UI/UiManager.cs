@@ -19,7 +19,7 @@ namespace GameBoxSdk.Runtime.UI
 
     public class UiManager : BaseSystem, IInputControlableEntity
     {
-        private const string EVENT_SYSTEM_PREFAB_PATH = "Ui/EventSystem";
+        private const string EVENT_SYSTEM_PREFAB_PATH = "GameBox/Ui/EventSystem";
         private const int BACKGROUND_SORTING_GROUP = -1;
 
         private ViewsDatabase viewsDatabase = null;

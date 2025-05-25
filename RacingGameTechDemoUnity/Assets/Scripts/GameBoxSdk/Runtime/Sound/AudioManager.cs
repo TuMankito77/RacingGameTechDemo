@@ -10,7 +10,7 @@ namespace GameBoxSdk.Runtime.Sound
 
     public class AudioManager : BaseSystem
     {
-        private const string AUDIO_PLAYER_PREFAB_PATH = "Sound/AudioPlayer";
+        private const string AUDIO_PLAYER_PREFAB_PATH = "GameBox/Sound/AudioPlayer";
 
         private Dictionary<int, AudioPlayer> loopingAudioPlayers = new Dictionary<int, AudioPlayer>();
         private AudioPlayer audioPlayerPrefab = null;
