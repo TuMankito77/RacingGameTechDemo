@@ -3,6 +3,7 @@ namespace GameBoxSdk.Runtime.UI.CoreElements
     using UnityEngine;
     
     using GameBoxSdk.Runtime.Sound;
+    using System;
 
     public class ButtonAudioPlayer : MonoBehaviour
     {
@@ -12,7 +13,7 @@ namespace GameBoxSdk.Runtime.UI.CoreElements
         [SerializeField]
         private ClipIds clipId = ClipIds.None;
 
-        private AudioManager audioManager = null;
+        private Action<ClipIds> playClipOnce = null;
 
         #region Unity methods
 
@@ -28,14 +29,14 @@ namespace GameBoxSdk.Runtime.UI.CoreElements
 
         #endregion
 
-        public void Initialize(AudioManager sourceAudioManager)
+        public void Initialize(Action<ClipIds> sourcePlayClipOnce)
         {
-            audioManager = sourceAudioManager;
+            playClipOnce = sourcePlayClipOnce;
         }
 
         private void OnButtonSubmit()
         {
-            audioManager.PlayGeneralClip(clipId);
+            playClipOnce?.Invoke(clipId);
         }
     }
 }

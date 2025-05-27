@@ -20,7 +20,6 @@ namespace GameBoxSdk.Runtime.UI.Views
         public event Action onTransitionInFinished;
         public event Action onTransitionOutFinished;
 
-        protected AudioManager audioManager = null;
         private ButtonAudioPlayer[] buttonAudioPlayers = new ButtonAudioPlayer[0];
         private SelectableElement[] selectableElements = new SelectableElement[0];
         private IViewAnimator viewAnimator = null;
@@ -68,7 +67,7 @@ namespace GameBoxSdk.Runtime.UI.Views
             CanvasGroup.interactable = isInractable;
         }
 
-        public virtual void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData, LocalizationManager localizationManager, EventSystem sourceEventSystem)
+        public virtual void Initialize(Camera uiCamera, Action<ClipIds> playClipOnce, ViewInjectableData viewInjectableData, Func<string, string> getLocalizedText, EventSystem sourceEventSystem)
         {
             Canvas = GetComponent<Canvas>();
             CanvasGroup = GetComponent<CanvasGroup>();
@@ -76,17 +75,16 @@ namespace GameBoxSdk.Runtime.UI.Views
             Canvas.renderMode = RenderMode.ScreenSpaceCamera;
             Canvas.worldCamera = uiCamera;
             CanvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
-            audioManager = sourceAudioManager;
             eventSystem = sourceEventSystem;
 
             foreach(ButtonAudioPlayer buttonAudioPlayer in buttonAudioPlayers)
             {
-                buttonAudioPlayer.Initialize(sourceAudioManager);
+                buttonAudioPlayer.Initialize(playClipOnce);
             }
 
             foreach(LocalizedText localizedText in GetComponentsInChildren<LocalizedText>(includeInactive: true))
             {
-                localizedText.Initialize(localizationManager);
+                localizedText.Initialize(getLocalizedText);
             }
         }
 

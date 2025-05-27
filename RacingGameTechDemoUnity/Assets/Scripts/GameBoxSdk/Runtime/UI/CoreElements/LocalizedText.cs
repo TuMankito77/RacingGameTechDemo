@@ -17,7 +17,7 @@ namespace GameBoxSdk.Runtime.UI.CoreElements
         [SerializeField]
         private string localizationKey = string.Empty;
 
-        private LocalizationManager localizationManager = null;
+        private Func<string, string> getLocalizaedText = null;
 
         #region Unity Methods
 
@@ -55,10 +55,10 @@ namespace GameBoxSdk.Runtime.UI.CoreElements
 
         #endregion
 
-        public void Initialize(LocalizationManager sourceLocalizationManager)
+        public void Initialize(in Func<string, string> soruceGetLocalizedText)
         {
-            localizationManager = sourceLocalizationManager;
-            textComponent.text = localizationManager.GetLocalizedText(localizationKey);
+            getLocalizaedText = soruceGetLocalizedText;
+            textComponent.text = getLocalizaedText?.Invoke(localizationKey);
         }
 
         private void HandleLocalizationEvents(LocalizationEvents localizationEvent, object data)
@@ -67,7 +67,7 @@ namespace GameBoxSdk.Runtime.UI.CoreElements
             {
                 case LocalizationEvents.OnLanguageUpdated:
                     {
-                        textComponent.text = localizationManager.GetLocalizedText(localizationKey);
+                        textComponent.text = getLocalizaedText?.Invoke(localizationKey);
                         break;
                     }
 

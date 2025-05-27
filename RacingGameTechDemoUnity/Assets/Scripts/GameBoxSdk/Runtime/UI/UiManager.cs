@@ -14,7 +14,6 @@ namespace GameBoxSdk.Runtime.UI
     using UnityEngine.InputSystem.UI;
     using UnityEngine.Rendering.Universal;
     using GameBoxSdk.Runtime.UI.Views.DataContainers;
-    using GameBoxSdk.Runtime.Localization;
     using UnityEngine.EventSystems;
 
     public class UiManager : BaseSystem, IInputControlableEntity
@@ -26,10 +25,16 @@ namespace GameBoxSdk.Runtime.UI
         private GameObject uiManagerGO = null;
         private Camera uiCamera = null;
         private List<BaseView> viewsOpened = null;
-        private AudioManager audioManager = null;
-        private LocalizationManager localizationManager = null;
         private EventSystem eventSystem = null;
         private int currentInteractbleGroupId = 0;
+        private Func<string, string> getLocalizedText = null;
+        private Action<ClipIds> playClipOnce = null;
+
+        public UiManager(Func<string, string> sourceGetLocalizedText, Action<ClipIds> sourcePlayClipOnce) : base()
+        {
+            getLocalizedText = sourceGetLocalizedText;
+            playClipOnce = sourcePlayClipOnce;
+        }
 
         //To-do: Create a request class that will be sent through an event in order to request a view.
         public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
@@ -37,8 +42,6 @@ namespace GameBoxSdk.Runtime.UI
             await base.Initialize(sourceDependencies);
 
             viewsOpened = new List<BaseView>();
-            audioManager = GetDependency<AudioManager>();
-            localizationManager = GetDependency<LocalizationManager>();
             //To-do: Create a database that categorizes the objects loaded based on a list that groups what is needed to be loaded depending on what needs to be shown.
             ContentLoader contentLoader = GetDependency<ContentLoader>();
             viewsDatabase = await contentLoader.LoadAsset<ViewsDatabase>(ViewsDatabase.VIEWS_DATABASE_SCRIPTABLE_OBJECT_PATH);
@@ -89,7 +92,7 @@ namespace GameBoxSdk.Runtime.UI
             }
 
             BaseView viewFound = GameObject.Instantiate(viewsDatabase.GetFile(viewId.ToString()), uiManagerGO.transform);
-            viewFound.Initialize(uiCamera, audioManager, viewInjectableData, localizationManager, eventSystem);
+            viewFound.Initialize(uiCamera, playClipOnce, viewInjectableData, getLocalizedText, eventSystem);
             //NOTE: This will update the values like the width and height so that they do not appear as zero,
             //dunno how I will remind this to myself -_-, BUT remember, we have to do this before trying to access any RectTransform values
             Canvas.ForceUpdateCanvases();

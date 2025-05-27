@@ -19,9 +19,12 @@ namespace RacingGameDemo.Runtime.Core
         private const string CARS_DATABASE_PATH = "RacingGameDemo/Cars/CarsDatabase";
 
         private SystemsInitializer systemsInitializer = null;
-
-        private UiManager uiManager = null;
         private ContentLoader contentLoader = null;
+        private CameraStackingManager cameraStackingManager = null;
+        private LocalizationManager localizationManager = null;
+        private AudioManager audioManager = null;
+        private UiManager uiManager = null;
+
 
         public GameManager()
         {
@@ -80,18 +83,22 @@ namespace RacingGameDemo.Runtime.Core
 
         private List<BaseSystem> GetCoreSystems()
         {
+            contentLoader = new ContentLoader();
+            cameraStackingManager = new CameraStackingManager();
+            localizationManager = new LocalizationManager();
+            audioManager = new AudioManager();
+            uiManager = new UiManager(localizationManager.GetLocalizedText, audioManager.PlayGeneralClip);
+
             return new List<BaseSystem>()
             {
-                new ContentLoader(),
-                new CameraStackingManager(),
-                new LocalizationManager()
+                contentLoader,
+                cameraStackingManager,
+                localizationManager
                     .AddDependency<ContentLoader>(),
-                new AudioManager()
+                audioManager
                     .AddDependency<ContentLoader>(),
-                new UiManager()
+                uiManager
                     .AddDependency<ContentLoader>()
-                    .AddDependency<LocalizationManager>()
-                    .AddDependency<AudioManager>()
                     .AddDependency<CameraStackingManager>()
             };
         }
@@ -99,9 +106,6 @@ namespace RacingGameDemo.Runtime.Core
         private void OnSystemsInitialized()
         {
             systemsInitializer.OnSystemsInitialized -= OnSystemsInitialized;
-            
-            uiManager = systemsInitializer.GetSystem<UiManager>();
-            contentLoader = systemsInitializer.GetSystem<ContentLoader>();
 
             uiManager.DisplayView(ViewIds.MainMenu, disableCurrentInteractableGroup: false);
         }

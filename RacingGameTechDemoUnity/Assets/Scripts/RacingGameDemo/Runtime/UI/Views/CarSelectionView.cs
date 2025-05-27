@@ -11,6 +11,7 @@ namespace RacingGameDemo.Runtime.UI.Views
     
     using RacingGameDemo.Runtime.Gameplay.Car;
     using RacingGameDemo.Runtime.UI.Views.Data;
+    using System;
 
     public class CarSelectionView : BaseView
     {
@@ -22,9 +23,9 @@ namespace RacingGameDemo.Runtime.UI.Views
 
         private CarsDatabase carsDatabase = null;
 
-        public override void Initialize(Camera uiCamera, AudioManager sourceAudioManager, ViewInjectableData viewInjectableData, LocalizationManager localizationManager, EventSystem sourceEventSystem)
+        public override void Initialize(Camera uiCamera, Action<ClipIds> playClipOnce, ViewInjectableData viewInjectableData, Func<string, string> getLocalizedText, EventSystem sourceEventSystem)
         {
-            base.Initialize(uiCamera, sourceAudioManager, viewInjectableData, localizationManager, sourceEventSystem);
+            base.Initialize(uiCamera, playClipOnce, viewInjectableData, getLocalizedText, sourceEventSystem);
 
             CarSelectionViewData carSelectionViewData = viewInjectableData as CarSelectionViewData;
 

@@ -33,6 +33,11 @@ namespace GameBoxSdk.Runtime.Core
             return true;
         }
 
+        /// <summary>
+        /// Add dependencies to other systems if this system needs another system in order to execute its Initialize method. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public BaseSystem AddDependency<T>() where T : BaseSystem
         {
             if(dependencies.ContainsKey(typeof(T)))
