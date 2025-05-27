@@ -10,13 +10,18 @@ namespace RacingGameDemo.Runtime.Core
     using GameBoxSdk.Runtime.UI;
     using GameBoxSdk.Runtime.UI.Views;
     using GameBoxSdk.Runtime.Utils;
+    using RacingGameDemo.Runtime.Gameplay.Car;
     using RacingGameDemo.Runtime.UI;
+    using RacingGameDemo.Runtime.UI.Views.Data;
 
     public class GameManager : IListener
     {
+        private const string CARS_DATABASE_PATH = "RacingGameDemo/Cars/CarsDatabase";
+
         private SystemsInitializer systemsInitializer = null;
 
         private UiManager uiManager = null;
+        private ContentLoader contentLoader = null;
 
         public GameManager()
         {
@@ -61,7 +66,8 @@ namespace RacingGameDemo.Runtime.Core
                 case UiEvents.OnStartRaceButtonPressed:
                     {
                         uiManager.RemoveView(ViewIds.MainMenu);
-                        uiManager.DisplayView(ViewIds.CarSelection, disableCurrentInteractableGroup: true);
+                        //To-do: ADD A LOADING SCREEN HERE PLEASE, THIS IS ASYNCRONOUS
+                        contentLoader.LoadAssetAsynchronously<CarsDatabase>(CARS_DATABASE_PATH, OnCarsDatabaseLoaded, null);
                         break;
                     }
 
@@ -93,8 +99,18 @@ namespace RacingGameDemo.Runtime.Core
         private void OnSystemsInitialized()
         {
             systemsInitializer.OnSystemsInitialized -= OnSystemsInitialized;
+            
             uiManager = systemsInitializer.GetSystem<UiManager>();
+            contentLoader = systemsInitializer.GetSystem<ContentLoader>();
+
             uiManager.DisplayView(ViewIds.MainMenu, disableCurrentInteractableGroup: false);
+        }
+
+        private void OnCarsDatabaseLoaded(CarsDatabase carsDatabase)
+        {
+            carsDatabase.Initialize();
+            CarSelectionViewData carSelectionViewData = new CarSelectionViewData(carsDatabase);
+            uiManager.DisplayView(ViewIds.CarSelection, disableCurrentInteractableGroup: true, carSelectionViewData);
         }
     }
 }
