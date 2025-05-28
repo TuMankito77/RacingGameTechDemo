@@ -236,6 +236,7 @@ MonoBehaviour:
   deselectAfterSubmitAction: 1
   selectableElementNeighborGroups: []
   button: {fileID: 1402709501871151221}
+  buttonText: {fileID: 6784977218555756373}
   triggerButtonActionBeforeAnimation: 1
 --- !u!114 &-7322968589048252705
 MonoBehaviour:

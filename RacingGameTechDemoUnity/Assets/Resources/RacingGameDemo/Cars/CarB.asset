@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: CarB
   m_EditorClassIdentifier: 
   displayName: Car B
+  displayNameLocKey: Name.CarB
   carPrefab: {fileID: 0}
   maxSpeed: 300
   maxAcceleration: 100
