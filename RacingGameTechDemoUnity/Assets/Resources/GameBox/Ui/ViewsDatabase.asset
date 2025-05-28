@@ -17,6 +17,8 @@ MonoBehaviour:
     file: {fileID: 8551697730057497296, guid: d7ae091bc5831b14faef32928496d151, type: 3}
   - id: CarSelection
     file: {fileID: 8735469763730783503, guid: c0b8e9399b305ad458ac1bd3f02c0c84, type: 3}
+  - id: LoadingScreen
+    file: {fileID: 4968371974588863562, guid: a9224d668cb3a984d9551a0c40d4f3fa, type: 3}
   viewsLayerMask:
     serializedVersion: 2
     m_Bits: 32
