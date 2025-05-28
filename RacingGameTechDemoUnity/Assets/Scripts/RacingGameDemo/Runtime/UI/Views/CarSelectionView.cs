@@ -2,8 +2,7 @@ namespace RacingGameDemo.Runtime.UI.Views
 {
     using UnityEngine;
     using UnityEngine.EventSystems;
-    
-    using GameBoxSdk.Runtime.Localization;
+
     using GameBoxSdk.Runtime.Sound;
     using GameBoxSdk.Runtime.UI.Views;
     using GameBoxSdk.Runtime.UI.Views.DataContainers;
@@ -36,7 +35,10 @@ namespace RacingGameDemo.Runtime.UI.Views
 
             foreach(string id in carsDatabase.Ids)
             {
+                CarDetails carDetails = carsDatabase.GetFile(id);
                 BaseButton button = Instantiate(carOptionButtonPrefab, carButtonsContainer);
+                string localizedName = getLocalizedText(carDetails.DisplayNameLocKey);
+                button.UpdateButtonText(localizedName);
             }
         }
     }

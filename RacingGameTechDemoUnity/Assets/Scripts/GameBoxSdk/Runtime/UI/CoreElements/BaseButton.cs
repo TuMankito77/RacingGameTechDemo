@@ -13,6 +13,9 @@ namespace GameBoxSdk.Runtime.UI.CoreElements
         private Button button = null;
 
         [SerializeField]
+        private Text buttonText = null;
+
+        [SerializeField]
         private bool triggerButtonActionBeforeAnimation = false;
 
         private ISeletableElementAnimator buttonAniator = null;
@@ -57,6 +60,11 @@ namespace GameBoxSdk.Runtime.UI.CoreElements
         {
             base.SetInteractable(isActive);
             button.interactable = isActive;
+        }
+
+        public void UpdateButtonText(string text)
+        {
+            buttonText.text = text;
         }
 
         protected override void CheckNeededComponents()
