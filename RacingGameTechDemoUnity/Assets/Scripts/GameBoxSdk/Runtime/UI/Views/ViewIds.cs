@@ -7,6 +7,7 @@ namespace GameBoxSdk.Runtime.UI.Views
 		None,
 		MainMenu,
 		CarSelection,
+		LoadingScreen,
 	}
 }
 

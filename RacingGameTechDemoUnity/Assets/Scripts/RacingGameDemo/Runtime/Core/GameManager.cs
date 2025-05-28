@@ -69,7 +69,7 @@ namespace RacingGameDemo.Runtime.Core
                 case UiEvents.OnStartRaceButtonPressed:
                     {
                         uiManager.RemoveView(ViewIds.MainMenu);
-                        //To-do: ADD A LOADING SCREEN HERE PLEASE, THIS IS ASYNCRONOUS
+                        uiManager.DisplayView(ViewIds.LoadingScreen, disableCurrentInteractableGroup: true);
                         contentLoader.LoadAssetAsynchronously<CarsDatabase>(CARS_DATABASE_PATH, OnCarsDatabaseLoaded, null);
                         break;
                     }
@@ -106,7 +106,7 @@ namespace RacingGameDemo.Runtime.Core
         private void OnSystemsInitialized()
         {
             systemsInitializer.OnSystemsInitialized -= OnSystemsInitialized;
-
+            uiManager.RemoveView(ViewIds.LoadingScreen);
             uiManager.DisplayView(ViewIds.MainMenu, disableCurrentInteractableGroup: false);
         }
 
