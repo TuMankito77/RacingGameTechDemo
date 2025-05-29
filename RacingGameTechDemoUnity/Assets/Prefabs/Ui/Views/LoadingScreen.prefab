@@ -630,6 +630,11 @@ MonoBehaviour:
     verticalEntranceDirection: 0
     startPosition: {x: 0, y: 0}
     targetPosition: {x: 0, y: 0}
+  - rectTransform: {fileID: 2879427437666107613}
+    horizontalEntranceDirection: -1
+    verticalEntranceDirection: 0
+    startPosition: {x: 0, y: 0}
+    targetPosition: {x: 0, y: 0}
 --- !u!223 &3591806219538544650
 Canvas:
   m_ObjectHideFlags: 0
