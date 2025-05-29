@@ -10,6 +10,8 @@ namespace RacingGameDemo.Runtime.Core
     using GameBoxSdk.Runtime.UI;
     using GameBoxSdk.Runtime.UI.Views;
     using GameBoxSdk.Runtime.Utils;
+    
+    using RacingGameDemo.Runtime.Gameplay;
     using RacingGameDemo.Runtime.Gameplay.Car;
     using RacingGameDemo.Runtime.UI;
     using RacingGameDemo.Runtime.UI.Views.Data;
@@ -18,13 +20,13 @@ namespace RacingGameDemo.Runtime.Core
     {
         private const string CARS_DATABASE_PATH = "RacingGameDemo/Cars/CarsDatabase";
 
+        private RaceData raceData = default(RaceData);
         private SystemsInitializer systemsInitializer = null;
         private ContentLoader contentLoader = null;
         private CameraStackingManager cameraStackingManager = null;
         private LocalizationManager localizationManager = null;
         private AudioManager audioManager = null;
         private UiManager uiManager = null;
-
 
         public GameManager()
         {
@@ -74,6 +76,13 @@ namespace RacingGameDemo.Runtime.Core
                         break;
                     }
 
+                case UiEvents.OnCarButtonPressed:
+                    {
+                        string carId = data as string;
+                        raceData.carIdSelected = carId ?? string.Empty;
+                        break;
+                    }
+
                 default:
                     {
                         break;
@@ -113,7 +122,7 @@ namespace RacingGameDemo.Runtime.Core
         private void OnCarsDatabaseLoaded(CarsDatabase carsDatabase)
         {
             carsDatabase.Initialize();
-            CarSelectionViewData carSelectionViewData = new CarSelectionViewData(carsDatabase);
+            CarSelectionViewData carSelectionViewData = new CarSelectionViewData(carsDatabase, raceData.carIdSelected);
             uiManager.DisplayView(ViewIds.CarSelection, disableCurrentInteractableGroup: true, carSelectionViewData);
         }
     }

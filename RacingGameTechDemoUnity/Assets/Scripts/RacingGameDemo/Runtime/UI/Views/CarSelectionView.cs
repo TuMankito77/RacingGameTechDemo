@@ -56,6 +56,15 @@ namespace RacingGameDemo.Runtime.UI.Views
 
                 carButton.onButtonPressed += OnCarButtonPressed;
             }
+
+            if(carSelectionViewData.LastCarIdSelected != null)
+            {
+                EventDispatcher.Instance.Dispatch(UiEvents.OnCarButtonPressed, carSelectionViewData.LastCarIdSelected);
+            }
+            else
+            {
+                EventDispatcher.Instance.Dispatch(UiEvents.OnCarButtonPressed, carsDatabase.Ids[0]);
+            }
         }
 
         public override void TransitionIn(int sourceInteractableGroupId)
