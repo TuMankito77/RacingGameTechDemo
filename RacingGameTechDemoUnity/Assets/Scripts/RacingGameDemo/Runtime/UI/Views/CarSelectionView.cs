@@ -1,6 +1,7 @@
 namespace RacingGameDemo.Runtime.UI.Views
 {
     using System;
+    using System.Collections.Generic;
     
     using UnityEngine;
     using UnityEngine.EventSystems;
@@ -16,6 +17,12 @@ namespace RacingGameDemo.Runtime.UI.Views
 
     public class CarSelectionView : BaseView
     {
+        private struct CarIdButtonPair
+        {
+            public string id;
+            public BaseButton button;
+        }
+
         [SerializeField]
         private BaseButton carOptionButtonPrefab = null;
         
@@ -27,11 +34,13 @@ namespace RacingGameDemo.Runtime.UI.Views
 
         private CarsDatabase carsDatabase = null;
         private string carSelected = string.Empty;
+        private List<CarIdButtonPair> carIdButtonPairs = null;
 
         public override void Initialize(Camera uiCamera, Action<ClipIds> playClipOnce, ViewInjectableData viewInjectableData, Func<string, string> getLocalizedText, EventSystem sourceEventSystem)
         {
             base.Initialize(uiCamera, playClipOnce, viewInjectableData, getLocalizedText, sourceEventSystem);
 
+            carIdButtonPairs = new List<CarIdButtonPair>();
             CarSelectionViewData carSelectionViewData = viewInjectableData as CarSelectionViewData;
 
             if(carSelectionViewData != null)
@@ -43,27 +52,32 @@ namespace RacingGameDemo.Runtime.UI.Views
             {
                 CarDetails carDetails = carsDatabase.GetFile(carId);
                 BaseButton carButton = Instantiate(carOptionButtonPrefab, carButtonsContainer);
+
+                carIdButtonPairs.Add(new CarIdButtonPair() 
+                { 
+                    id = carId, 
+                    button = carButton 
+                } );
+
                 string localizedName = getLocalizedText(carDetails.DisplayNameLocKey);
                 carButton.UpdateButtonText(localizedName);
 
                 void OnCarButtonPressed()
                 {
-                    carButton.onButtonPressed -= OnCarButtonPressed;
                     EventDispatcher.Instance.Dispatch(UiEvents.OnCarButtonPressed, carId);
                     carSelected = carId;
+                    UpdateCarButtonSelected();
                     //Update the car being displayed on the screen.
                 }
 
                 carButton.onButtonPressed += OnCarButtonPressed;
+                carButton.SetInteractable(carId != carSelectionViewData.LastCarIdSelected);
             }
 
-            if(carSelectionViewData.LastCarIdSelected != null)
-            {
-                EventDispatcher.Instance.Dispatch(UiEvents.OnCarButtonPressed, carSelectionViewData.LastCarIdSelected);
-            }
-            else
+            if(carSelectionViewData.LastCarIdSelected == null)
             {
                 EventDispatcher.Instance.Dispatch(UiEvents.OnCarButtonPressed, carsDatabase.Ids[0]);
+                carIdButtonPairs[0].button.SetInteractable(false);
             }
         }
 
@@ -82,6 +96,14 @@ namespace RacingGameDemo.Runtime.UI.Views
         private void OnSelectCarButtonPressed()
         {
             EventDispatcher.Instance.Dispatch(UiEvents.OnSelectCarButtonPressed, carSelected);
+        }
+
+        private void UpdateCarButtonSelected()
+        {
+            foreach(CarIdButtonPair carIdButtonPair in carIdButtonPairs)
+            {
+                carIdButtonPair.button.SetInteractable(carSelected != carIdButtonPair.id);
+            }
         }
     }
 }
