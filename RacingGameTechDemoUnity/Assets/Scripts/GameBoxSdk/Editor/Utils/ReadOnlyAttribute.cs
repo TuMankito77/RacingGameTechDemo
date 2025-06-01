@@ -1,4 +1,4 @@
-namespace GameBoxSdk.Runtime.Utils
+namespace GameBoxSdk.Editor.Utils
 {
     using UnityEditor;
     using UnityEngine;
