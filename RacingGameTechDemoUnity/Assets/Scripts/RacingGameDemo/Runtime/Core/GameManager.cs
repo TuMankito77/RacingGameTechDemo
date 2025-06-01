@@ -122,8 +122,11 @@ namespace RacingGameDemo.Runtime.Core
         private void OnCarsDatabaseLoaded(CarsDatabase carsDatabase)
         {
             carsDatabase.Initialize();
+            uiManager.RemoveView(ViewIds.LoadingScreen);
+            CarShowcaseViewData carShowcaseViewData = new CarShowcaseViewData(carsDatabase);
+            uiManager.DisplayView(ViewIds.CarShowcase, disableCurrentInteractableGroup: true, carShowcaseViewData);
             CarSelectionViewData carSelectionViewData = new CarSelectionViewData(carsDatabase, raceData.carIdSelected);
-            uiManager.DisplayView(ViewIds.CarSelection, disableCurrentInteractableGroup: true, carSelectionViewData);
+            uiManager.DisplayView(ViewIds.CarSelection, disableCurrentInteractableGroup: false, carSelectionViewData);
         }
     }
 }
