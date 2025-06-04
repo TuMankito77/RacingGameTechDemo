@@ -7,7 +7,6 @@ namespace GameBoxSdk.Runtime.Input
     using UnityEngine.InputSystem.EnhancedTouch;
 
     using GameBoxSdk.Runtime.Utils;
-    using System.Security.Cryptography;
 
     public class InputManager
     {
