@@ -144,10 +144,21 @@ namespace GameBoxSdk.Runtime.UI
             RemoveView(topStackView);
         }
 
+        public void RemoveTopStackInteractableGroup()
+        {
+            while(CurrentViewDisplayed().InteractableGroupId == currentInteractbleGroupId)
+            {
+                int lastIndex = viewsOpened.Count - 1;
+                BaseView topStackView = viewsOpened[lastIndex];
+                RemoveView(topStackView);
+            }
+
+            currentInteractbleGroupId--;
+        }
+
         private void RemoveView(BaseView view)
         {
             int viewIndex = view.Canvas.sortingOrder;
-            view.Canvas.sortingOrder = BACKGROUND_SORTING_GROUP;
             viewsOpened.Remove(view);
 
             void OnTransitionOutFinished()

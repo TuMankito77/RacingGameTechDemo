@@ -115,7 +115,7 @@ namespace GameBoxSdk.Runtime.Input
                     ""name"": ""Cancel"",
                     ""type"": ""Button"",
                     ""id"": ""c77171ce-66e5-467e-90d3-8968949a1d75"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false

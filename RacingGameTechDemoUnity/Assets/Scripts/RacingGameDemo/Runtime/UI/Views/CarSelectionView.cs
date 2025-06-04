@@ -67,7 +67,6 @@ namespace RacingGameDemo.Runtime.UI.Views
                     EventDispatcher.Instance.Dispatch(UiEvents.OnCarButtonPressed, carId);
                     carSelected = carId;
                     UpdateCarButtonSelected();
-                    //Update the car being displayed on the screen.
                 }
 
                 carButton.onButtonPressed += OnCarButtonPressed;
@@ -81,7 +80,7 @@ namespace RacingGameDemo.Runtime.UI.Views
             }
             else
             {
-                EventDispatcher.Instance.Dispatch(UiEvents.OnCarButtonPressed, carSelected);
+                EventDispatcher.Instance.Dispatch(UiEvents.OnCarButtonPressed, carSelectionViewData.LastCarIdSelected);
             }
         }
 

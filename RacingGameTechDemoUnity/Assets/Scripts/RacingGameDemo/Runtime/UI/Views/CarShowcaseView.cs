@@ -61,13 +61,19 @@ namespace RacingGameDemo.Runtime.UI.Views
             base.TransitionIn(sourceInteractableGroupId);
             EventDispatcher.Instance.AddListener(this, typeof(UiEvents));
             modelShocaseStudioPrefab = Instantiate(modelShocaseStudioPrefab);
+            onTransitionOutFinished += OnTransitionOutFinished;
+        }
+
+        private void OnTransitionOutFinished()
+        {
+            onTransitionOutFinished -= OnTransitionOutFinished;
+            Destroy(modelShocaseStudioPrefab.gameObject);
         }
 
         public override void TransitionOut()
         {
             base.TransitionOut();
             EventDispatcher.Instance.RemoveListener(this, typeof(UiEvents));
-            Destroy(modelShocaseStudioPrefab);
         }
 
         private void HandleUiEvents(UiEvents uiEvent, object data)

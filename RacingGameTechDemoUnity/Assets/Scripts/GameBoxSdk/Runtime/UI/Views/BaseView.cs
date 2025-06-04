@@ -9,7 +9,6 @@ namespace GameBoxSdk.Runtime.UI.Views
     using GameBoxSdk.Runtime.Sound;
     using GameBoxSdk.Runtime.UI.CoreElements;
     using GameBoxSdk.Runtime.UI.Views.DataContainers;
-    using GameBoxSdk.Runtime.Localization;
 
     [RequireComponent(typeof (Canvas),typeof(CanvasGroup))]
     public abstract class BaseView : MonoBehaviour
