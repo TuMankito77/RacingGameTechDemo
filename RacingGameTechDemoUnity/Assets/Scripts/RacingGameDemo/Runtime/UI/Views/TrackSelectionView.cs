@@ -13,6 +13,11 @@ namespace RacingGameDemo.Runtime.UI.Views
         private Transform trackButtonsContainer = null;
 
         private List<BaseButton> trackButtons = null;
+
+        public override void TransitionIn(int sourceInteractableGroupId)
+        {
+            base.TransitionIn(sourceInteractableGroupId);
+        }
     }
 }
 
