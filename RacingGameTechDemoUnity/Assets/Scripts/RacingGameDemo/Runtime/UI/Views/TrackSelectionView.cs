@@ -18,6 +18,11 @@ namespace RacingGameDemo.Runtime.UI.Views
         {
             base.TransitionIn(sourceInteractableGroupId);
         }
+
+        public override void TransitionOut()
+        {
+            base.TransitionOut();
+        }
     }
 }
 
