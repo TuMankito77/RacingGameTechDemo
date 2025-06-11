@@ -30,6 +30,9 @@ namespace RacingGameDemo.Runtime.UI.Views
         private Transform carButtonsContainer = null;
 
         [SerializeField]
+        private BaseButton viewCarButton = null;
+
+        [SerializeField]
         private BaseButton selectCarButton = null;
 
         private CarsDatabase carsDatabase = null;
@@ -88,12 +91,19 @@ namespace RacingGameDemo.Runtime.UI.Views
         {
             base.TransitionIn(sourceInteractableGroupId);
             selectCarButton.onButtonPressed += OnSelectCarButtonPressed;
+            viewCarButton.onButtonPressed += OnViewCarButtonPressed;
         }
 
         public override void TransitionOut()
         {
             base.TransitionOut();
             selectCarButton.onButtonPressed -= OnSelectCarButtonPressed;
+            viewCarButton.onButtonPressed -= OnViewCarButtonPressed;
+        }
+
+        private void OnViewCarButtonPressed()
+        {
+            EventDispatcher.Instance.Dispatch(UiEvents.OnViewCarButtonPressed);
         }
 
         private void OnSelectCarButtonPressed()

@@ -31,11 +31,12 @@ namespace RacingGameDemo.Runtime.Core
         private AudioManager audioManager = null;
         private UiManager uiManager = null;
         private InputManager inputManager = null;
+        private CarsDatabase carsDatabase = null;
+        private int remainingDatabasesToLoad = 0;
 
         public GameManager()
         {
             Application.targetFrameRate = 60;
-            LoggerUtil.Log("Initializing game!");
             systemsInitializer = new SystemsInitializer();
             systemsInitializer.OnSystemsInitialized += OnSystemsInitialized;
             systemsInitializer.InitializeSystems(GetCoreSystems());
@@ -95,18 +96,8 @@ namespace RacingGameDemo.Runtime.Core
         {
             systemsInitializer.OnSystemsInitialized -= OnSystemsInitialized;
             CreateInputControllers();
-            ShowMainMenu();
-        }
-
-        private void OnCarsDatabaseLoaded(CarsDatabase carsDatabase)
-        {
-            carsDatabase.Initialize();
-            uiManager.RemoveView(ViewIds.LoadingScreen);
-            inputManager.EnableInput(uiManager);
-            CarShowcaseViewData carShowcaseViewData = new CarShowcaseViewData(carsDatabase);
-            uiManager.DisplayView(ViewIds.CarShowcase, disableCurrentInteractableGroup: true, carShowcaseViewData);
-            CarSelectionViewData carSelectionViewData = new CarSelectionViewData(carsDatabase, raceData.carIdSelected);
-            uiManager.DisplayView(ViewIds.CarSelection, disableCurrentInteractableGroup: false, carSelectionViewData);
+            uiManager.DisplayView(ViewIds.LoadingScreen, disableCurrentInteractableGroup: false);
+            LoadDataBases();
         }
 
         private void CreateInputControllers()
@@ -131,18 +122,58 @@ namespace RacingGameDemo.Runtime.Core
             inputManager.EnableInput(uiManager);
         }
 
+        private void LoadDataBases()
+        {
+            remainingDatabasesToLoad++;
+            contentLoader.LoadAssetAsynchronously<CarsDatabase>
+                (
+                    CARS_DATABASE_PATH,
+                    (carsDatabaseAsset) =>
+                    {
+                        carsDatabase = carsDatabaseAsset;
+                        carsDatabase.Initialize();
+                        remainingDatabasesToLoad--;
+                        OnDatabaseLoaded();
+                    },
+                    null
+                );
+        }
+
+        private void OnDatabaseLoaded()
+        {
+            if(remainingDatabasesToLoad <= 0)
+            {
+                uiManager.RemoveView(ViewIds.LoadingScreen);
+                ShowMainMenu();
+            }
+        }
+
         private void HandleUiEvents(UiEvents uiEvent, object data)
         {
             switch (uiEvent)
             {
                 case UiEvents.OnStartRaceButtonPressed:
                     {
-                        inputManager.DisableInput(uiManager);
-                        uiManager.DisplayView(ViewIds.LoadingScreen, disableCurrentInteractableGroup: true);
-                        contentLoader.LoadAssetAsynchronously<CarsDatabase>(CARS_DATABASE_PATH, OnCarsDatabaseLoaded, null);
+                        CarShowcaseViewData carShowcaseViewData = new CarShowcaseViewData(carsDatabase);
+                        uiManager.DisplayView(ViewIds.CarShowcase, disableCurrentInteractableGroup: true, carShowcaseViewData);
+                        CarSelectionViewData carSelectionViewData = new CarSelectionViewData(carsDatabase, raceData.carIdSelected);
+                        uiManager.DisplayView(ViewIds.CarSelection, disableCurrentInteractableGroup: false, carSelectionViewData);
                         break;
                     }
 
+                case UiEvents.OnViewCarButtonPressed:
+                    {
+                        uiManager.RemoveView(ViewIds.CarSelection);
+                        break;
+                    }
+
+                case UiEvents.OnExitCarViewButtonPressed:
+                    {
+                        CarSelectionViewData carSelectionViewData = new CarSelectionViewData(carsDatabase, raceData.carIdSelected);
+                        uiManager.DisplayView(ViewIds.CarSelection, disableCurrentInteractableGroup: false, carSelectionViewData);
+                        break;
+                    }
+                
                 case UiEvents.OnCarButtonPressed:
                     {
                         string carId = data as string;

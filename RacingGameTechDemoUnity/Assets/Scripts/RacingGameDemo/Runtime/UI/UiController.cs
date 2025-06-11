@@ -4,8 +4,8 @@ namespace RacingGameDemo.Runtime.UI
     
     using GameBoxSdk.Runtime.Input;
     using GameBoxSdk.Runtime.UI;
-    using GameBoxSdk.Runtime.UI.Views;
-    using GameBoxSdk.Runtime.Utils;
+    using GameBoxSdk.Runtime.Events;
+
     using RacingGameDemo.Runtime.UI.Views;
 
     public class UiController : InputController
@@ -34,11 +34,17 @@ namespace RacingGameDemo.Runtime.UI
 
         private void OnGoBackActionPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
-            LoggerUtil.Log("Go back action performed");
             Type viewType = uiManager.CurrentViewDisplayed().GetType();
 
-            if (viewType == typeof(MainMenuView))
+            if (viewType == typeof(MainMenuView) || 
+                viewType == typeof(LoadingScreenView))
             {
+                return;
+            }
+
+            if(viewType == typeof(CarShowcaseView))
+            {
+                EventDispatcher.Instance.Dispatch(UiEvents.OnExitCarViewButtonPressed);
                 return;
             }
 

@@ -11,6 +11,7 @@ namespace RacingGameDemo.Runtime.UI.Views
     using GameBoxSdk.Runtime.UI.Views.DataContainers;
     using GameBoxSdk.Runtime.Events;
     using GameBoxSdk.Runtime.Utils;
+    using GameBoxSdk.Runtime.UI.CoreElements;
 
     using RacingGameDemo.Runtime.Gameplay.Car;
     using RacingGameDemo.Runtime.UI.Views.Data;
@@ -19,6 +20,9 @@ namespace RacingGameDemo.Runtime.UI.Views
     {
         [SerializeField]
         private ModelShowcaseStudio modelShocaseStudioPrefab = null;
+
+        [SerializeField]
+        private BaseButton exitCarViewButton = null;
 
         private CarsDatabase carsDatabase = null;
 
@@ -61,11 +65,13 @@ namespace RacingGameDemo.Runtime.UI.Views
             base.TransitionIn(sourceInteractableGroupId);
             EventDispatcher.Instance.AddListener(this, typeof(UiEvents));
             modelShocaseStudioPrefab = Instantiate(modelShocaseStudioPrefab);
+            exitCarViewButton.onButtonPressed += OnExitCarViewButtonPressed;
             onTransitionOutFinished += OnTransitionOutFinished;
         }
 
         private void OnTransitionOutFinished()
         {
+            exitCarViewButton.onButtonPressed -= OnExitCarViewButtonPressed;
             onTransitionOutFinished -= OnTransitionOutFinished;
             Destroy(modelShocaseStudioPrefab.gameObject);
         }
@@ -74,6 +80,11 @@ namespace RacingGameDemo.Runtime.UI.Views
         {
             base.TransitionOut();
             EventDispatcher.Instance.RemoveListener(this, typeof(UiEvents));
+        }
+
+        private void OnExitCarViewButtonPressed()
+        {
+            EventDispatcher.Instance.Dispatch(UiEvents.OnExitCarViewButtonPressed);
         }
 
         private void HandleUiEvents(UiEvents uiEvent, object data)
