@@ -148,12 +148,8 @@ namespace GameBoxSdk.Runtime.UI
         {
             while(CurrentViewDisplayed().InteractableGroupId == currentInteractbleGroupId)
             {
-                int lastIndex = viewsOpened.Count - 1;
-                BaseView topStackView = viewsOpened[lastIndex];
-                RemoveView(topStackView);
+                RemoveTopStackView();
             }
-
-            currentInteractbleGroupId--;
         }
 
         private void RemoveView(BaseView view)
@@ -176,7 +172,7 @@ namespace GameBoxSdk.Runtime.UI
 
                 BaseView currentViewDisplayed = CurrentViewDisplayed();
 
-                if(currentViewDisplayed.InteractableGroupId != currentInteractbleGroupId)
+                if (currentViewDisplayed != null && currentViewDisplayed.InteractableGroupId != currentInteractbleGroupId)
                 {
                     currentInteractbleGroupId = currentViewDisplayed.InteractableGroupId;
 
