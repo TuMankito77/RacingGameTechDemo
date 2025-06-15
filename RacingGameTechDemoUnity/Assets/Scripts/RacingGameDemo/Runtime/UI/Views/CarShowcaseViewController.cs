@@ -19,7 +19,7 @@ namespace RacingGameDemo.Runtime.UI.Views
             base.Enable(sourceInputActions, sourceEntityToControl);
             carShowCaseView = sourceEntityToControl as CarShowcaseView;
             inputActions.CarShowcaseController.Enable();
-            renderCameraTransform = carShowCaseView.ModelShowcaseStudioInstance.CameraCenterParentTransform;
+            renderCameraTransform = carShowCaseView.CarShowcaseStudio.CameraCenterParentTransform;
             currenPanRotationSpeed = 0;
         }
 
