@@ -661,6 +661,111 @@ namespace GameBoxSdk.Runtime.Input
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""CarShowcaseController"",
+            ""id"": ""5153fad6-9dde-4ea8-ad6c-85a03934aeac"",
+            ""actions"": [
+                {
+                    ""name"": ""Rotate"",
+                    ""type"": ""Value"",
+                    ""id"": ""f9d95527-0e0a-4f0b-8161-c16aa2317a43"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""903623a7-091f-41b8-8b75-5b103dfb41e8"",
+                    ""path"": ""<Gamepad>/dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""91a98d9b-86b8-4f38-86a5-8972abd027bd"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fd095c23-e0bd-4838-b69b-80d841f83699"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""a9d5a5ba-a5c8-458a-aefc-882dd9caad0e"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""657b65d8-f4f1-4cf1-b1d1-0d6868495c23"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""5239e480-3ca4-40c4-a4da-a26f7f4118a2"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""cf012089-8cc4-437f-abc0-47d8a7f43deb"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""7fefbc70-a84e-44ea-a7bc-b484eb0a2d5b"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -703,12 +808,16 @@ namespace GameBoxSdk.Runtime.Input
             m_GameplayController = asset.FindActionMap("GameplayController", throwIfNotFound: true);
             m_GameplayController_Movement = m_GameplayController.FindAction("Movement", throwIfNotFound: true);
             m_GameplayController_Pause = m_GameplayController.FindAction("Pause", throwIfNotFound: true);
+            // CarShowcaseController
+            m_CarShowcaseController = asset.FindActionMap("CarShowcaseController", throwIfNotFound: true);
+            m_CarShowcaseController_Rotate = m_CarShowcaseController.FindAction("Rotate", throwIfNotFound: true);
         }
 
         ~@InputActions()
         {
             UnityEngine.Debug.Assert(!m_UiController.enabled, "This will cause a leak and performance issues, InputActions.UiController.Disable() has not been called.");
             UnityEngine.Debug.Assert(!m_GameplayController.enabled, "This will cause a leak and performance issues, InputActions.GameplayController.Disable() has not been called.");
+            UnityEngine.Debug.Assert(!m_CarShowcaseController.enabled, "This will cause a leak and performance issues, InputActions.CarShowcaseController.Disable() has not been called.");
         }
 
         /// <summary>
@@ -1093,6 +1202,102 @@ namespace GameBoxSdk.Runtime.Input
         /// Provides a new <see cref="GameplayControllerActions" /> instance referencing this action map.
         /// </summary>
         public GameplayControllerActions @GameplayController => new GameplayControllerActions(this);
+
+        // CarShowcaseController
+        private readonly InputActionMap m_CarShowcaseController;
+        private List<ICarShowcaseControllerActions> m_CarShowcaseControllerActionsCallbackInterfaces = new List<ICarShowcaseControllerActions>();
+        private readonly InputAction m_CarShowcaseController_Rotate;
+        /// <summary>
+        /// Provides access to input actions defined in input action map "CarShowcaseController".
+        /// </summary>
+        public struct CarShowcaseControllerActions
+        {
+            private @InputActions m_Wrapper;
+
+            /// <summary>
+            /// Construct a new instance of the input action map wrapper class.
+            /// </summary>
+            public CarShowcaseControllerActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            /// <summary>
+            /// Provides access to the underlying input action "CarShowcaseController/Rotate".
+            /// </summary>
+            public InputAction @Rotate => m_Wrapper.m_CarShowcaseController_Rotate;
+            /// <summary>
+            /// Provides access to the underlying input action map instance.
+            /// </summary>
+            public InputActionMap Get() { return m_Wrapper.m_CarShowcaseController; }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Enable()" />
+            public void Enable() { Get().Enable(); }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.Disable()" />
+            public void Disable() { Get().Disable(); }
+            /// <inheritdoc cref="UnityEngine.InputSystem.InputActionMap.enabled" />
+            public bool enabled => Get().enabled;
+            /// <summary>
+            /// Implicitly converts an <see ref="CarShowcaseControllerActions" /> to an <see ref="InputActionMap" /> instance.
+            /// </summary>
+            public static implicit operator InputActionMap(CarShowcaseControllerActions set) { return set.Get(); }
+            /// <summary>
+            /// Adds <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+            /// </summary>
+            /// <param name="instance">Callback instance.</param>
+            /// <remarks>
+            /// If <paramref name="instance" /> is <c>null</c> or <paramref name="instance"/> have already been added this method does nothing.
+            /// </remarks>
+            /// <seealso cref="CarShowcaseControllerActions" />
+            public void AddCallbacks(ICarShowcaseControllerActions instance)
+            {
+                if (instance == null || m_Wrapper.m_CarShowcaseControllerActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_CarShowcaseControllerActionsCallbackInterfaces.Add(instance);
+                @Rotate.started += instance.OnRotate;
+                @Rotate.performed += instance.OnRotate;
+                @Rotate.canceled += instance.OnRotate;
+            }
+
+            /// <summary>
+            /// Removes <see cref="InputAction.started"/>, <see cref="InputAction.performed"/> and <see cref="InputAction.canceled"/> callbacks provided via <param cref="instance" /> on all input actions contained in this map.
+            /// </summary>
+            /// <remarks>
+            /// Calling this method when <paramref name="instance" /> have not previously been registered has no side-effects.
+            /// </remarks>
+            /// <seealso cref="CarShowcaseControllerActions" />
+            private void UnregisterCallbacks(ICarShowcaseControllerActions instance)
+            {
+                @Rotate.started -= instance.OnRotate;
+                @Rotate.performed -= instance.OnRotate;
+                @Rotate.canceled -= instance.OnRotate;
+            }
+
+            /// <summary>
+            /// Unregisters <param cref="instance" /> and unregisters all input action callbacks via <see cref="CarShowcaseControllerActions.UnregisterCallbacks(ICarShowcaseControllerActions)" />.
+            /// </summary>
+            /// <seealso cref="CarShowcaseControllerActions.UnregisterCallbacks(ICarShowcaseControllerActions)" />
+            public void RemoveCallbacks(ICarShowcaseControllerActions instance)
+            {
+                if (m_Wrapper.m_CarShowcaseControllerActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            /// <summary>
+            /// Replaces all existing callback instances and previously registered input action callbacks associated with them with callbacks provided via <param cref="instance" />.
+            /// </summary>
+            /// <remarks>
+            /// If <paramref name="instance" /> is <c>null</c>, calling this method will only unregister all existing callbacks but not register any new callbacks.
+            /// </remarks>
+            /// <seealso cref="CarShowcaseControllerActions.AddCallbacks(ICarShowcaseControllerActions)" />
+            /// <seealso cref="CarShowcaseControllerActions.RemoveCallbacks(ICarShowcaseControllerActions)" />
+            /// <seealso cref="CarShowcaseControllerActions.UnregisterCallbacks(ICarShowcaseControllerActions)" />
+            public void SetCallbacks(ICarShowcaseControllerActions instance)
+            {
+                foreach (var item in m_Wrapper.m_CarShowcaseControllerActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_CarShowcaseControllerActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        /// <summary>
+        /// Provides a new <see cref="CarShowcaseControllerActions" /> instance referencing this action map.
+        /// </summary>
+        public CarShowcaseControllerActions @CarShowcaseController => new CarShowcaseControllerActions(this);
         private int m_TouchSchemeIndex = -1;
         /// <summary>
         /// Provides access to the input control scheme.
@@ -1251,6 +1456,21 @@ namespace GameBoxSdk.Runtime.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnPause(InputAction.CallbackContext context);
+        }
+        /// <summary>
+        /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "CarShowcaseController" which allows adding and removing callbacks.
+        /// </summary>
+        /// <seealso cref="CarShowcaseControllerActions.AddCallbacks(ICarShowcaseControllerActions)" />
+        /// <seealso cref="CarShowcaseControllerActions.RemoveCallbacks(ICarShowcaseControllerActions)" />
+        public interface ICarShowcaseControllerActions
+        {
+            /// <summary>
+            /// Method invoked when associated input action "Rotate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnRotate(InputAction.CallbackContext context);
         }
     }
 }
