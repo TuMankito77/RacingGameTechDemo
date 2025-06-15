@@ -258,6 +258,8 @@ MonoBehaviour:
   inputBlockerImage: {fileID: 1389966196324952393}
   currentSelectableElementSelected: {fileID: 0}
   modelShocaseStudioPrefab: {fileID: 6518781383377711556, guid: 335a8e0b3de6a66498c5664aa7e72407, type: 3}
+  panRotationSpeed: 2
+  panRotationAcceleration: 5
   exitCarViewButton: {fileID: 3528555309389287718}
 --- !u!114 &8235890646376858881
 MonoBehaviour:
