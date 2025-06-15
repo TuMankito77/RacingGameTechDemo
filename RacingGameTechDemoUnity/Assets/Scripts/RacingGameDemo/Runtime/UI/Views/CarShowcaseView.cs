@@ -12,19 +12,30 @@ namespace RacingGameDemo.Runtime.UI.Views
     using GameBoxSdk.Runtime.Events;
     using GameBoxSdk.Runtime.Utils;
     using GameBoxSdk.Runtime.UI.CoreElements;
+    using GameBoxSdk.Runtime.Input;
 
     using RacingGameDemo.Runtime.Gameplay.Car;
     using RacingGameDemo.Runtime.UI.Views.Data;
 
-    public class CarShowcaseView : BaseView, IListener
+    public class CarShowcaseView : BaseView, IListener, IInputControlableEntity
     {
         [SerializeField]
         private ModelShowcaseStudio modelShocaseStudioPrefab = null;
+
+        [SerializeField, Min(0)]
+        private float panRotationSpeed = 10;
+
+        [SerializeField, Min(0)]
+        private float panRotationAcceleration = 1;
 
         [SerializeField]
         private BaseButton exitCarViewButton = null;
 
         private CarsDatabase carsDatabase = null;
+
+        public ModelShowcaseStudio ModelShowcaseStudioInstance { get; private set; } = null;
+        public float PanRotationSpeed => panRotationSpeed;
+        public float PanRotationAcceleration => panRotationAcceleration;
 
         #region IListener
 
@@ -64,7 +75,7 @@ namespace RacingGameDemo.Runtime.UI.Views
         {
             base.TransitionIn(sourceInteractableGroupId);
             EventDispatcher.Instance.AddListener(this, typeof(UiEvents));
-            modelShocaseStudioPrefab = Instantiate(modelShocaseStudioPrefab);
+            ModelShowcaseStudioInstance = Instantiate(modelShocaseStudioPrefab);
             exitCarViewButton.onButtonPressed += OnExitCarViewButtonPressed;
             onTransitionOutFinished += OnTransitionOutFinished;
         }
@@ -73,7 +84,7 @@ namespace RacingGameDemo.Runtime.UI.Views
         {
             exitCarViewButton.onButtonPressed -= OnExitCarViewButtonPressed;
             onTransitionOutFinished -= OnTransitionOutFinished;
-            Destroy(modelShocaseStudioPrefab.gameObject);
+            Destroy(ModelShowcaseStudioInstance.gameObject);
         }
 
         public override void TransitionOut()
@@ -101,7 +112,7 @@ namespace RacingGameDemo.Runtime.UI.Views
                         }
 
                         GameObject carPrefab = carsDatabase.GetFile(carId).CarPrefab;
-                        modelShocaseStudioPrefab.UpdateModelDisplayed(carPrefab);
+                        ModelShowcaseStudioInstance.UpdateModelDisplayed(carPrefab);
                         break;
                     }
 

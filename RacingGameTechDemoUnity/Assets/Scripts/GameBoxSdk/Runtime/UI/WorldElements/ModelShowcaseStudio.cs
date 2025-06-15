@@ -5,18 +5,23 @@ namespace GameBoxSdk.Runtime.UI.WorldElements
     public class ModelShowcaseStudio : MonoBehaviour
     {
         [SerializeField]
-        private Transform ModelPlacement = null;
+        private Transform modelPlacement = null;
 
-        private GameObject ModelDisplayed = null;
+        [SerializeField]
+        private Transform cameraCenterParentTransform = null;
 
-        public void UpdateModelDisplayed(GameObject aircraftPrefab)
+        private GameObject modelDisplayed = null;
+
+        public Transform CameraCenterParentTransform => cameraCenterParentTransform;
+
+        public void UpdateModelDisplayed(GameObject modelPrefab)
         {
-            if(ModelDisplayed != null)
+            if(modelDisplayed != null)
             {
-                Destroy(ModelDisplayed);
+                Destroy(modelDisplayed);
             }
 
-            ModelDisplayed = Instantiate(aircraftPrefab, ModelPlacement);
+            modelDisplayed = Instantiate(modelPrefab, modelPlacement);
         }
     }
 }

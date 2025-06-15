@@ -18,6 +18,7 @@ namespace RacingGameDemo.Runtime.Core
     using RacingGameDemo.Runtime.Gameplay.Car;
     using RacingGameDemo.Runtime.UI;
     using RacingGameDemo.Runtime.UI.Views.Data;
+    using RacingGameDemo.Runtime.UI.Views;
 
     public class GameManager : IListener
     {
@@ -110,7 +111,8 @@ namespace RacingGameDemo.Runtime.Core
 
             InputController[] inputControllers = new InputController[]
             {
-                new UiController()
+                new UiController(),
+                new CarShowcaseViewController()
             };
 
             inputManager.AddInputController(inputControllers);
@@ -164,11 +166,15 @@ namespace RacingGameDemo.Runtime.Core
                 case UiEvents.OnViewCarButtonPressed:
                     {
                         uiManager.RemoveView(ViewIds.CarSelection);
+                        CarShowcaseView carShowcaseView = uiManager.GetTopStackView(ViewIds.CarShowcase) as CarShowcaseView;
+                        inputManager.EnableInput(carShowcaseView);
                         break;
                     }
 
                 case UiEvents.OnExitCarViewButtonPressed:
                     {
+                        CarShowcaseView carShowcaseView = uiManager.GetTopStackView(ViewIds.CarShowcase) as CarShowcaseView;
+                        inputManager.DisableInput(carShowcaseView);
                         CarSelectionViewData carSelectionViewData = new CarSelectionViewData(carsDatabase, raceData.carIdSelected);
                         uiManager.DisplayView(ViewIds.CarSelection, disableCurrentInteractableGroup: false, carSelectionViewData);
                         break;
