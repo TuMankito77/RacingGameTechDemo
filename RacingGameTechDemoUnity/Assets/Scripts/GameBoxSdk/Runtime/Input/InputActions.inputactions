@@ -99,7 +99,7 @@
                     "name": "GoBack",
                     "type": "Button",
                     "id": "38529c39-3bb5-4c1d-9aa7-68c1272d5f2c",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -586,6 +586,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "ActivateMouseRotation",
+                    "type": "Button",
+                    "id": "4da49cd1-4382-4a29-a5b9-a95c5d05959d",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "MouseRotate",
+                    "type": "Value",
+                    "id": "fbc8e30e-617d-4638-93bd-a9d9bd2c9e0f",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -595,7 +613,7 @@
                     "path": "<Gamepad>/dpad",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Gamepad",
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -606,7 +624,7 @@
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Gamepad",
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -617,7 +635,7 @@
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Gamepad",
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -639,7 +657,7 @@
                     "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -650,7 +668,7 @@
                     "path": "<Keyboard>/downArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -661,7 +679,7 @@
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": true
@@ -672,10 +690,32 @@
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Keyboard&Mouse",
                     "action": "Rotate",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "677e813b-128a-490e-a6c0-81e8f7118dbe",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "ActivateMouseRotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2c5ea13f-a8c4-47d4-a26f-061b3484a953",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MouseRotate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

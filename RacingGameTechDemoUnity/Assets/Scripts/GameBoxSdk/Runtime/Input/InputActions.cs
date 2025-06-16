@@ -187,7 +187,7 @@ namespace GameBoxSdk.Runtime.Input
                     ""name"": ""GoBack"",
                     ""type"": ""Button"",
                     ""id"": ""38529c39-3bb5-4c1d-9aa7-68c1272d5f2c"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -674,6 +674,24 @@ namespace GameBoxSdk.Runtime.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ActivateMouseRotation"",
+                    ""type"": ""Button"",
+                    ""id"": ""4da49cd1-4382-4a29-a5b9-a95c5d05959d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseRotate"",
+                    ""type"": ""Value"",
+                    ""id"": ""fbc8e30e-617d-4638-93bd-a9d9bd2c9e0f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -683,7 +701,7 @@ namespace GameBoxSdk.Runtime.Input
                     ""path"": ""<Gamepad>/dpad"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Gamepad"",
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -694,7 +712,7 @@ namespace GameBoxSdk.Runtime.Input
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Gamepad"",
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -705,7 +723,7 @@ namespace GameBoxSdk.Runtime.Input
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Gamepad"",
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -727,7 +745,7 @@ namespace GameBoxSdk.Runtime.Input
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -738,7 +756,7 @@ namespace GameBoxSdk.Runtime.Input
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -749,7 +767,7 @@ namespace GameBoxSdk.Runtime.Input
                     ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
@@ -760,10 +778,32 @@ namespace GameBoxSdk.Runtime.Input
                     ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""677e813b-128a-490e-a6c0-81e8f7118dbe"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ActivateMouseRotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2c5ea13f-a8c4-47d4-a26f-061b3484a953"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseRotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -811,6 +851,8 @@ namespace GameBoxSdk.Runtime.Input
             // CarShowcaseController
             m_CarShowcaseController = asset.FindActionMap("CarShowcaseController", throwIfNotFound: true);
             m_CarShowcaseController_Rotate = m_CarShowcaseController.FindAction("Rotate", throwIfNotFound: true);
+            m_CarShowcaseController_ActivateMouseRotation = m_CarShowcaseController.FindAction("ActivateMouseRotation", throwIfNotFound: true);
+            m_CarShowcaseController_MouseRotate = m_CarShowcaseController.FindAction("MouseRotate", throwIfNotFound: true);
         }
 
         ~@InputActions()
@@ -1207,6 +1249,8 @@ namespace GameBoxSdk.Runtime.Input
         private readonly InputActionMap m_CarShowcaseController;
         private List<ICarShowcaseControllerActions> m_CarShowcaseControllerActionsCallbackInterfaces = new List<ICarShowcaseControllerActions>();
         private readonly InputAction m_CarShowcaseController_Rotate;
+        private readonly InputAction m_CarShowcaseController_ActivateMouseRotation;
+        private readonly InputAction m_CarShowcaseController_MouseRotate;
         /// <summary>
         /// Provides access to input actions defined in input action map "CarShowcaseController".
         /// </summary>
@@ -1222,6 +1266,14 @@ namespace GameBoxSdk.Runtime.Input
             /// Provides access to the underlying input action "CarShowcaseController/Rotate".
             /// </summary>
             public InputAction @Rotate => m_Wrapper.m_CarShowcaseController_Rotate;
+            /// <summary>
+            /// Provides access to the underlying input action "CarShowcaseController/ActivateMouseRotation".
+            /// </summary>
+            public InputAction @ActivateMouseRotation => m_Wrapper.m_CarShowcaseController_ActivateMouseRotation;
+            /// <summary>
+            /// Provides access to the underlying input action "CarShowcaseController/MouseRotate".
+            /// </summary>
+            public InputAction @MouseRotate => m_Wrapper.m_CarShowcaseController_MouseRotate;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -1251,6 +1303,12 @@ namespace GameBoxSdk.Runtime.Input
                 @Rotate.started += instance.OnRotate;
                 @Rotate.performed += instance.OnRotate;
                 @Rotate.canceled += instance.OnRotate;
+                @ActivateMouseRotation.started += instance.OnActivateMouseRotation;
+                @ActivateMouseRotation.performed += instance.OnActivateMouseRotation;
+                @ActivateMouseRotation.canceled += instance.OnActivateMouseRotation;
+                @MouseRotate.started += instance.OnMouseRotate;
+                @MouseRotate.performed += instance.OnMouseRotate;
+                @MouseRotate.canceled += instance.OnMouseRotate;
             }
 
             /// <summary>
@@ -1265,6 +1323,12 @@ namespace GameBoxSdk.Runtime.Input
                 @Rotate.started -= instance.OnRotate;
                 @Rotate.performed -= instance.OnRotate;
                 @Rotate.canceled -= instance.OnRotate;
+                @ActivateMouseRotation.started -= instance.OnActivateMouseRotation;
+                @ActivateMouseRotation.performed -= instance.OnActivateMouseRotation;
+                @ActivateMouseRotation.canceled -= instance.OnActivateMouseRotation;
+                @MouseRotate.started -= instance.OnMouseRotate;
+                @MouseRotate.performed -= instance.OnMouseRotate;
+                @MouseRotate.canceled -= instance.OnMouseRotate;
             }
 
             /// <summary>
@@ -1471,6 +1535,20 @@ namespace GameBoxSdk.Runtime.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnRotate(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "ActivateMouseRotation" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnActivateMouseRotation(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "MouseRotate" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnMouseRotate(InputAction.CallbackContext context);
         }
     }
 }
