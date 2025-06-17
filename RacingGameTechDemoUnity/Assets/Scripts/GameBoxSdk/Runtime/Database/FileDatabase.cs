@@ -1,12 +1,14 @@
 namespace GameBoxSdk.Runtime.Database
 {
-    using GameBoxSdk.Runtime.Utils;
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Text;
     using System.Text.RegularExpressions;
+    
     using UnityEngine;
+    
+    using GameBoxSdk.Runtime.Utils;
 
     public abstract class FileDatabase<T> : ScriptableObject where T : class
     {
