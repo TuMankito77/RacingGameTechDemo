@@ -1494,7 +1494,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8177836413900475592, guid: a42fd7b356418db4380f5959e0c094c3, type: 3}
       propertyPath: localizationKey
-      value: Button.SelectCar
+      value: Button.Select
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
