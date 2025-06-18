@@ -1,6 +1,8 @@
 namespace RacingGameDemo.Runtime.Gameplay.Track
 {
     using UnityEngine;
+    
+    using GameBoxSdk.Runtime.Utils;
 
     [CreateAssetMenu(fileName = TRACK_DETAILS_ASSET_NAME, menuName = "RacingGameDemo/TrackDetails")]
     public class TrackDetails : ScriptableObject
@@ -14,10 +16,10 @@ namespace RacingGameDemo.Runtime.Gameplay.Track
         private string displayNameLocKey = string.Empty;
 
         [SerializeField]
-        private string trackScenePath = string.Empty;
+        private SceneField trackScene = null;
 
         public string DisplayName => displayName;
         public string DisplayNameLocKey => displayNameLocKey;
-        public string TrackScenePath => trackScenePath;
+        public SceneField TrackScene => trackScene;
     }
 }
