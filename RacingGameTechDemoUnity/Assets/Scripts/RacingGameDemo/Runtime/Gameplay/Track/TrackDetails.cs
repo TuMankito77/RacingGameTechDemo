@@ -18,8 +18,12 @@ namespace RacingGameDemo.Runtime.Gameplay.Track
         [SerializeField]
         private SceneField trackScene = null;
 
+        [SerializeField]
+        private Sprite trackPreview = null;
+
         public string DisplayName => displayName;
         public string DisplayNameLocKey => displayNameLocKey;
         public SceneField TrackScene => trackScene;
+        public Sprite TrackPreview => trackPreview;
     }
 }

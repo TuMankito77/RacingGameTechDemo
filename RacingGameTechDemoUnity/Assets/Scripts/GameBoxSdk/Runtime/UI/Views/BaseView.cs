@@ -9,6 +9,7 @@ namespace GameBoxSdk.Runtime.UI.Views
     using GameBoxSdk.Runtime.Sound;
     using GameBoxSdk.Runtime.UI.CoreElements;
     using GameBoxSdk.Runtime.UI.Views.DataContainers;
+    using GameBoxSdk.Runtime.Utils;
 
     [RequireComponent(typeof (Canvas),typeof(CanvasGroup))]
     public abstract class BaseView : MonoBehaviour
@@ -140,6 +141,11 @@ namespace GameBoxSdk.Runtime.UI.Views
                 CanvasGroup.alpha = 0;
                 onTransitionOutFinished?.Invoke();
             }
+        }
+
+        protected void DisplayMissingInjectableViewDataError()
+        {
+            LoggerUtil.LogError($"{GetType().Name} : The view injectable data is null and it is required to display this view, make sure to pass it in when calling the display view function.");
         }
 
         private void SelectFirstActiveButton()

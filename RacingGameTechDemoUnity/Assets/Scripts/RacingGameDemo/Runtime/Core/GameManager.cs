@@ -19,11 +19,10 @@ namespace RacingGameDemo.Runtime.Core
     using RacingGameDemo.Runtime.UI;
     using RacingGameDemo.Runtime.UI.Views.Data;
     using RacingGameDemo.Runtime.UI.Views;
+    using RacingGameDemo.Runtime.Gameplay.Track;
 
     public class GameManager : IListener
     {
-        private const string CARS_DATABASE_PATH = "RacingGameDemo/Cars/CarsDatabase";
-
         private RaceData raceData = default(RaceData);
         private SystemsInitializer systemsInitializer = null;
         private ContentLoader contentLoader = null;
@@ -33,6 +32,7 @@ namespace RacingGameDemo.Runtime.Core
         private UiManager uiManager = null;
         private InputManager inputManager = null;
         private CarsDatabase carsDatabase = null;
+        private TracksDatabase tracksDatabase = null;
         private int remainingDatabasesToLoad = 0;
 
         public GameManager()
@@ -129,11 +129,25 @@ namespace RacingGameDemo.Runtime.Core
             remainingDatabasesToLoad++;
             contentLoader.LoadAssetAsynchronously<CarsDatabase>
                 (
-                    CARS_DATABASE_PATH,
+                    CarsDatabase.CARS_DATABASE_SCRIPTABLE_OBJECT_PATH,
                     (carsDatabaseAsset) =>
                     {
                         carsDatabase = carsDatabaseAsset;
                         carsDatabase.Initialize();
+                        remainingDatabasesToLoad--;
+                        OnDatabaseLoaded();
+                    },
+                    null
+                );
+
+            remainingDatabasesToLoad++;
+            contentLoader.LoadAssetAsynchronously<TracksDatabase>
+                (
+                    TracksDatabase.TRACKS_DATABASE_SCRIPTABLE_OBJECT_PATH,
+                    (tracksDatabaseAsset) =>
+                    {
+                        tracksDatabase = tracksDatabaseAsset;
+                        tracksDatabase.Initialize();
                         remainingDatabasesToLoad--;
                         OnDatabaseLoaded();
                     },
@@ -189,7 +203,8 @@ namespace RacingGameDemo.Runtime.Core
 
                 case UiEvents.OnSelectCarButtonPressed:
                     {
-                        //Display the track selection view.
+                        TrackSelectionViewData trackSelectionViewData = new TrackSelectionViewData(tracksDatabase, raceData.trackIdSelected);
+                        uiManager.DisplayView(ViewIds.TrackSelection, disableCurrentInteractableGroup: true, trackSelectionViewData);
                         break;
                     }
 

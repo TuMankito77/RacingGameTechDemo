@@ -46,10 +46,13 @@ namespace RacingGameDemo.Runtime.UI.Views
             carIdButtonPairs = new List<CarIdButtonPair>();
             CarSelectionViewData carSelectionViewData = viewInjectableData as CarSelectionViewData;
 
-            if(carSelectionViewData != null)
+            if(carSelectionViewData == null)
             {
-                carsDatabase = carSelectionViewData.CarsDatabase;
+                DisplayMissingInjectableViewDataError();
+                return;
             }
+
+            carsDatabase = carSelectionViewData.CarsDatabase;
 
             foreach(string carId in carsDatabase.Ids)
             {
@@ -80,10 +83,12 @@ namespace RacingGameDemo.Runtime.UI.Views
             {
                 EventDispatcher.Instance.Dispatch(UiEvents.OnCarButtonPressed, carsDatabase.Ids[0]);
                 carIdButtonPairs[0].button.SetInteractable(false);
+                carSelected = carsDatabase.Ids[0];
             }
             else
             {
                 EventDispatcher.Instance.Dispatch(UiEvents.OnCarButtonPressed, carSelectionViewData.LastCarIdSelected);
+                carSelected = carSelectionViewData.LastCarIdSelected;
             }
         }
 
