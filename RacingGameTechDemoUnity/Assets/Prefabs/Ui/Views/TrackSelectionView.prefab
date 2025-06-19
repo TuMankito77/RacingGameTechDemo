@@ -364,7 +364,7 @@ GameObject:
   - component: {fileID: 1850706977727249255}
   - component: {fileID: 4323303506206477591}
   m_Layer: 5
-  m_Name: TrackImage
+  m_Name: TrackPreviewImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1375,7 +1375,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputBlockerImage: {fileID: 2030701423737940093}
   currentSelectableElementSelected: {fileID: 0}
+  trackOptionButtonPrefab: {fileID: 3334511290038273358, guid: 9bcf577b519ab0242867cb9bd8bb62c0, type: 3}
   trackButtonsContainer: {fileID: 8895582843143832245}
+  selectTrackButton: {fileID: 911463764118741880}
+  trackPreviewImage: {fileID: 1850706977727249255}
 --- !u!1001 &3856800798522376995
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1481,6 +1484,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a42fd7b356418db4380f5959e0c094c3, type: 3}
+--- !u!114 &911463764118741880 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4116343465198919771, guid: a42fd7b356418db4380f5959e0c094c3, type: 3}
+  m_PrefabInstance: {fileID: 3856800798522376995}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bec8debc353ef7d4da92e7fd15668ca9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6368649113923591441 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7919552750002314802, guid: a42fd7b356418db4380f5959e0c094c3, type: 3}
