@@ -4,6 +4,7 @@ namespace RacingGameDemo.Runtime.Core
     using System.Collections.Generic;
 
     using UnityEngine;
+    using UnityEngine.SceneManagement;
 
     using GameBoxSdk.Runtime.Core;
     using GameBoxSdk.Runtime.Events;
@@ -164,6 +165,11 @@ namespace RacingGameDemo.Runtime.Core
             }
         }
 
+        private void OnTrackSceneLoaded()
+        {
+            uiManager.RemoveView(ViewIds.LoadingScreen);
+        }
+
         private void HandleUiEvents(UiEvents uiEvent, object data)
         {
             switch (uiEvent)
@@ -205,6 +211,27 @@ namespace RacingGameDemo.Runtime.Core
                     {
                         TrackSelectionViewData trackSelectionViewData = new TrackSelectionViewData(tracksDatabase, raceData.trackIdSelected);
                         uiManager.DisplayView(ViewIds.TrackSelection, disableCurrentInteractableGroup: true, trackSelectionViewData);
+                        break;
+                    }
+
+                case UiEvents.OnTrackButtonPressed:
+                    {
+                        string trackId = data as string;
+                        raceData.trackIdSelected = trackId ?? string.Empty;
+                        break;
+                    }
+
+                case UiEvents.OnSelectTrackButtonPressed:
+                    {
+                        inputManager.DisableInput(uiManager);
+                        uiManager.DisplayView(ViewIds.LoadingScreen, disableCurrentInteractableGroup: true);
+                        uiManager.RemoveView(ViewIds.TrackSelection);
+                        uiManager.RemoveView(ViewIds.CarSelection);
+                        uiManager.RemoveView(ViewIds.CarShowcase);
+                        uiManager.RemoveView(ViewIds.MainMenu);
+                        TrackDetails selectedTrackDetails = tracksDatabase.GetFile(raceData.trackIdSelected);
+                        string trackSceneName = selectedTrackDetails.TrackScene.SceneName;
+                        contentLoader.LoadScene(trackSceneName, LoadSceneMode.Additive, OnTrackSceneLoaded, setAsMainScene: true);
                         break;
                     }
 

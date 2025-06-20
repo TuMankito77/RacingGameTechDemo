@@ -15,7 +15,6 @@ namespace RacingGameDemo.Runtime.UI.Views
     using RacingGameDemo.Runtime.Gameplay.Track;
     using RacingGameDemo.Runtime.UI.Views.Data;
     using GameBoxSdk.Runtime.Events;
-    using GameBoxSdk.Runtime.Utils;
 
     public class TrackSelectionView : BaseView
     {
@@ -87,6 +86,7 @@ namespace RacingGameDemo.Runtime.UI.Views
                 EventDispatcher.Instance.Dispatch(UiEvents.OnTrackButtonPressed, tracksDatabase.Ids[0]);
                 trackIdButtonPairs[0].button.SetInteractable(false);
                 trackSelected = tracksDatabase.Ids[0];
+                trackPreviewImage.sprite = tracksDatabase.GetFile(trackSelected).TrackPreview;
             }
             else
             {
@@ -109,7 +109,7 @@ namespace RacingGameDemo.Runtime.UI.Views
         
         private void OnSelectTrackButtonPressed()
         {
-            LoggerUtil.Log("The race should start once this button has been pressed.");
+            EventDispatcher.Instance.Dispatch(UiEvents.OnSelectTrackButtonPressed);
         }
 
         private void UpdateTrackButtonSelected()

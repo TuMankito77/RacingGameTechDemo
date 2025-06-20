@@ -121,7 +121,7 @@ namespace GameBoxSdk.Runtime.UI
 
         public BaseView CurrentViewDisplayed()
         {
-            return viewsOpened[viewsOpened.Count - 1];
+            return viewsOpened.Count > 0 ? viewsOpened[viewsOpened.Count - 1] : null;
         }
 
         public void RemoveView(ViewIds viewId)
