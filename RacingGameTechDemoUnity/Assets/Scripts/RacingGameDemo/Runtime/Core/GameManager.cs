@@ -26,12 +26,14 @@ namespace RacingGameDemo.Runtime.Core
     {
         private RaceData raceData = default(RaceData);
         private SystemsInitializer systemsInitializer = null;
+        private SystemsInitializer raceSystemsInitializer = null;
         private ContentLoader contentLoader = null;
         private CameraStackingManager cameraStackingManager = null;
         private LocalizationManager localizationManager = null;
         private AudioManager audioManager = null;
         private UiManager uiManager = null;
         private InputManager inputManager = null;
+        private RaceLevelInitializer raceLevelInitializer = null;
         private CarsDatabase carsDatabase = null;
         private TracksDatabase tracksDatabase = null;
         private int remainingDatabasesToLoad = 0;
@@ -91,6 +93,16 @@ namespace RacingGameDemo.Runtime.Core
                 uiManager
                     .AddDependency<ContentLoader>()
                     .AddDependency<CameraStackingManager>()
+            };
+        }
+
+        private List<BaseSystem> GetRaceLevelSystems()
+        {
+            raceLevelInitializer = new RaceLevelInitializer(contentLoader, cameraStackingManager);
+
+            return new List<BaseSystem>()
+            {
+                raceLevelInitializer
             };
         }
 
@@ -167,6 +179,13 @@ namespace RacingGameDemo.Runtime.Core
 
         private void OnTrackSceneLoaded()
         {
+            raceSystemsInitializer = new SystemsInitializer();
+            raceSystemsInitializer.OnSystemsInitialized += OnRaceSystemsInitialized;
+            raceSystemsInitializer.InitializeSystems(GetRaceLevelSystems());
+        }
+
+        private void OnRaceSystemsInitialized()
+        {
             uiManager.RemoveView(ViewIds.LoadingScreen);
         }
 
@@ -224,14 +243,22 @@ namespace RacingGameDemo.Runtime.Core
                 case UiEvents.OnSelectTrackButtonPressed:
                     {
                         inputManager.DisableInput(uiManager);
+
                         uiManager.DisplayView(ViewIds.LoadingScreen, disableCurrentInteractableGroup: true);
+                        
+                        //NOTE: We are waiting for the removal of this view since all transition outs have the same duration in the current open views and we don't want to see
+                        //leftover elements from other views if the race level is loded before these views have finished their transition out animations. 
+                        uiManager.GetTopStackView(ViewIds.MainMenu).onTransitionOutFinished += () =>
+                        {
+                            TrackDetails selectedTrackDetails = tracksDatabase.GetFile(raceData.trackIdSelected);
+                            string trackSceneName = selectedTrackDetails.TrackScene.SceneName;
+                            contentLoader.LoadScene(trackSceneName, LoadSceneMode.Additive, OnTrackSceneLoaded, setAsMainScene: true);
+                        };
+                        
                         uiManager.RemoveView(ViewIds.TrackSelection);
                         uiManager.RemoveView(ViewIds.CarSelection);
                         uiManager.RemoveView(ViewIds.CarShowcase);
                         uiManager.RemoveView(ViewIds.MainMenu);
-                        TrackDetails selectedTrackDetails = tracksDatabase.GetFile(raceData.trackIdSelected);
-                        string trackSceneName = selectedTrackDetails.TrackScene.SceneName;
-                        contentLoader.LoadScene(trackSceneName, LoadSceneMode.Additive, OnTrackSceneLoaded, setAsMainScene: true);
                         break;
                     }
 
