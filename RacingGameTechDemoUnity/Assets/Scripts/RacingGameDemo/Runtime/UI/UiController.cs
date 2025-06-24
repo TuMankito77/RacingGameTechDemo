@@ -26,6 +26,10 @@ namespace RacingGameDemo.Runtime.UI
         public override void Disable()
         {
             base.Disable();
+            inputActions.UiController.GoBack.performed -= OnGoBackActionPerformed;
+            inputActions.UiController.Navigate.performed -= OnNavigateActionPerformed;
+            inputActions.UiController.Disable();
+            uiManager = null;
         }
 
         private void OnNavigateActionPerformed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -45,6 +49,12 @@ namespace RacingGameDemo.Runtime.UI
             if(viewType == typeof(CarShowcaseView))
             {
                 EventDispatcher.Instance.Dispatch(UiEvents.OnExitCarViewButtonPressed);
+                return;
+            }
+
+            if(viewType == typeof(PauseMenuView))
+            {
+                EventDispatcher.Instance.Dispatch(UiEvents.OnUnpuaseButtonPressed);
                 return;
             }
 

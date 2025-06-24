@@ -499,7 +499,7 @@ namespace GameBoxSdk.Runtime.Input
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""e5a58aa1-7f9e-4c82-acad-435a995bb908"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false

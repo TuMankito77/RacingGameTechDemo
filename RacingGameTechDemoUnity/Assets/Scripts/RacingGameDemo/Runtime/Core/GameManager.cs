@@ -98,7 +98,8 @@ namespace RacingGameDemo.Runtime.Core
 
         private List<BaseSystem> GetRaceLevelSystems()
         {
-            raceLevelInitializer = new RaceLevelInitializer(contentLoader, cameraStackingManager);
+            BaseCar selectedGameplayCarPrefab = carsDatabase.GetFile(raceData.carIdSelected).GameplayCar;
+            raceLevelInitializer = new RaceLevelInitializer(contentLoader, cameraStackingManager, selectedGameplayCarPrefab);
 
             return new List<BaseSystem>()
             {
@@ -125,7 +126,8 @@ namespace RacingGameDemo.Runtime.Core
             InputController[] inputControllers = new InputController[]
             {
                 new UiController(),
-                new CarShowcaseViewController()
+                new CarShowcaseViewController(),
+                new GameplayController()
             };
 
             inputManager.AddInputController(inputControllers);
@@ -186,6 +188,7 @@ namespace RacingGameDemo.Runtime.Core
 
         private void OnRaceSystemsInitialized()
         {
+            inputManager.EnableInput(raceLevelInitializer.GameplayCarInstance);
             uiManager.RemoveView(ViewIds.LoadingScreen);
         }
 
@@ -259,6 +262,22 @@ namespace RacingGameDemo.Runtime.Core
                         uiManager.RemoveView(ViewIds.CarSelection);
                         uiManager.RemoveView(ViewIds.CarShowcase);
                         uiManager.RemoveView(ViewIds.MainMenu);
+                        break;
+                    }
+
+                case UiEvents.OnPauseButtonPressed:
+                    {
+                        inputManager.DisableInput(raceLevelInitializer.GameplayCarInstance);
+                        inputManager.EnableInput(uiManager);
+                        uiManager.DisplayView(ViewIds.PauseMenu, disableCurrentInteractableGroup: true);
+                        break;
+                    }
+
+                case UiEvents.OnUnpuaseButtonPressed:
+                    {
+                        inputManager.DisableInput(uiManager);
+                        inputManager.EnableInput(raceLevelInitializer.GameplayCarInstance);
+                        uiManager.RemoveView(ViewIds.PauseMenu);
                         break;
                     }
 

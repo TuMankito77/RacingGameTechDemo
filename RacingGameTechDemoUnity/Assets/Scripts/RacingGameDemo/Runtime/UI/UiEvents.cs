@@ -11,7 +11,9 @@ namespace RacingGameDemo.Runtime.UI
         OnExitCarViewButtonPressed,
         OnSelectCarButtonPressed,
         OnTrackButtonPressed,
-        OnSelectTrackButtonPressed
+        OnSelectTrackButtonPressed,
+        OnPauseButtonPressed,
+        OnUnpuaseButtonPressed
     }
 }
 

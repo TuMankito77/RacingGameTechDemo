@@ -10,6 +10,7 @@ namespace GameBoxSdk.Runtime.UI.Views
 		LoadingScreen,
 		CarShowcase,
 		TrackSelection,
+		PauseMenu,
 	}
 }
 
