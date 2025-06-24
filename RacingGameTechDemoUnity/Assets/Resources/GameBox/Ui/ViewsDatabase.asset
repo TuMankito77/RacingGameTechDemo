@@ -23,6 +23,8 @@ MonoBehaviour:
     file: {fileID: -7076605824450223799, guid: c777ad22c95e33242a3d461707f6f97a, type: 3}
   - id: TrackSelection
     file: {fileID: -1786492168109209968, guid: d145882acde7055479c0959cc9d03419, type: 3}
+  - id: PauseMenu
+    file: {fileID: -1187000897463938995, guid: 71cc633d2c370d644aae4c20f04b2f3f, type: 3}
   viewsLayerMask:
     serializedVersion: 2
     m_Bits: 32
