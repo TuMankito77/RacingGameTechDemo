@@ -17,6 +17,9 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
         private GameObject carPrefab = null;
 
         [SerializeField]
+        private BaseCar gameplayCar = null;
+
+        [SerializeField]
         private float maxSpeed = 300;
 
         [SerializeField]
@@ -25,6 +28,7 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
         public string DisplayName => displayName;
         public string DisplayNameLocKey => displayNameLocKey;
         public GameObject CarPrefab => carPrefab;
+        public BaseCar GameplayCar => gameplayCar;
         public float MaxSpeed => maxSpeed;
         public float MaxAcceleration => maxAcceleration;
     }

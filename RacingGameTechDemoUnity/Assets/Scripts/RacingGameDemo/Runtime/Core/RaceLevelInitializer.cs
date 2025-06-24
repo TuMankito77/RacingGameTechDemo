@@ -7,6 +7,8 @@ namespace RacingGameDemo.Runtime.Core
     
     using GameBoxSdk.Runtime.Core;
 
+    using RacingGameDemo.Runtime.Gameplay.Car;
+
     public class RaceLevelInitializer : BaseSystem
     {
         private const string GAMEPLAY_RENDERING_CAMERA_PATH = "RacingGameDemo/RaceLevel/GameplayRenderingCamera";
@@ -14,11 +16,16 @@ namespace RacingGameDemo.Runtime.Core
         private ContentLoader contentLoader = null;
         private CameraStackingManager cameraStackingManager = null;
         private Camera gameplayRenderingCamera = null;
+        private BaseCar gameplayCarPrefab = null;
+        private BaseCar gameplayCarInstance = null;
 
-        public RaceLevelInitializer(ContentLoader sourceContentLoader, CameraStackingManager sourceCameraStackingManager)
+        public BaseCar GameplayCarInstance => gameplayCarInstance;
+
+        public RaceLevelInitializer(ContentLoader sourceContentLoader, CameraStackingManager sourceCameraStackingManager, BaseCar gameplayCarPrefab)
         {
             contentLoader = sourceContentLoader;
             cameraStackingManager = sourceCameraStackingManager;
+            this.gameplayCarPrefab = gameplayCarPrefab;
         }
 
         public override async Task<bool> Initialize(IEnumerable<BaseSystem> sourceDependencies)
@@ -37,7 +44,19 @@ namespace RacingGameDemo.Runtime.Core
 
             gameplayRenderingCamera = GameObject.Instantiate(gameplayRenderingCameraPrefab);
             cameraStackingManager.AddCameraToStackAtBottom(gameplayRenderingCamera);
+            gameplayCarInstance = GameObject.Instantiate(gameplayCarPrefab);
+            //TO-DO: Place the car at the start of the track.
+            //TO-DO: Display the HUD view.
             return true;
+        }
+
+        public void Dispose()
+        {
+            //TO-DO: Remove the HUD view.
+            gameplayCarInstance.Dispose();
+            GameObject.Destroy(gameplayCarInstance.gameObject);
+            gameplayCarPrefab = null;
+            gameplayCarInstance = null;
         }
     }
 }
