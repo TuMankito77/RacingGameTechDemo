@@ -54,9 +54,14 @@ namespace RacingGameDemo.Runtime.Core
         {
             //TO-DO: Remove the HUD view.
             gameplayCarInstance.Dispose();
+            cameraStackingManager.RemoveCameraFromStack(gameplayRenderingCamera);
             GameObject.Destroy(gameplayCarInstance.gameObject);
+            GameObject.Destroy(gameplayRenderingCamera.gameObject);
             gameplayCarPrefab = null;
             gameplayCarInstance = null;
+            gameplayRenderingCamera = null;
+            cameraStackingManager = null;
+            contentLoader = null;
         }
     }
 }

@@ -4,11 +4,12 @@ namespace RacingGameDemo.Runtime.UI.Views
 
     using GameBoxSdk.Runtime.UI.Views;
     using GameBoxSdk.Runtime.UI.CoreElements;
+    using GameBoxSdk.Runtime.Events;
 
     public class PauseMenuView : BaseView
     {
         [SerializeField]
-        private BaseButton continueButton = null;
+        private BaseButton continueRaceButton = null;
 
         [SerializeField]
         private BaseButton restartRaceButton = null;
@@ -17,44 +18,44 @@ namespace RacingGameDemo.Runtime.UI.Views
         private BaseButton optionsButton = null;
 
         [SerializeField]
-        private BaseButton quitButton = null;
+        private BaseButton quitRaceButton = null;
 
         public override void TransitionIn(int sourceInteractableGroupId)
         {
             base.TransitionIn(sourceInteractableGroupId);
-            continueButton.onButtonPressed += OnContinueButtonPressed;
+            continueRaceButton.onButtonPressed += OnContinueRaceButtonPressed;
             restartRaceButton.onButtonPressed += OnRestartRaceButtonPressed;
             optionsButton.onButtonPressed += OnOptionsButtonPressed;
-            quitButton.onButtonPressed += OnQuitButtonPressed;
+            quitRaceButton.onButtonPressed += OnQuitRaceButtonPressed;
         }
 
         public override void TransitionOut()
         {
             base.TransitionOut();
-            continueButton.onButtonPressed -= OnContinueButtonPressed;
+            continueRaceButton.onButtonPressed -= OnContinueRaceButtonPressed;
             restartRaceButton.onButtonPressed -= OnRestartRaceButtonPressed;
             optionsButton.onButtonPressed -= OnOptionsButtonPressed;
-            quitButton.onButtonPressed -= OnQuitButtonPressed;
+            quitRaceButton.onButtonPressed -= OnQuitRaceButtonPressed;
         }
 
-        private void OnContinueButtonPressed()
+        private void OnContinueRaceButtonPressed()
         {
-            
+            EventDispatcher.Instance.Dispatch(UiEvents.OnContinueRaceButtonPressed);
         }
 
         private void OnRestartRaceButtonPressed()
         {
-            
+            EventDispatcher.Instance.Dispatch(UiEvents.OnRestartRaceButtonPressed);
         }
 
         private void OnOptionsButtonPressed()
         {
-            
+            EventDispatcher.Instance.Dispatch(UiEvents.OnOptionsButtonPressed);
         }
 
-        private void OnQuitButtonPressed()
+        private void OnQuitRaceButtonPressed()
         {
-            
+            EventDispatcher.Instance.Dispatch(UiEvents.OnQuitRaceButtonPressed);
         }
     }
 }

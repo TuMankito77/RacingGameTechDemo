@@ -78,20 +78,20 @@ namespace RacingGameDemo.Runtime.UI.Views
 
                 trackButton.onButtonPressed += OnTrackButtonPressed;
                 trackButton.SetInteractable(trackId != trackSelectionViewData.LastTrackIdSelected);
-
             }
             
             if(trackSelectionViewData.LastTrackIdSelected == null)
             {
-                EventDispatcher.Instance.Dispatch(UiEvents.OnTrackButtonPressed, tracksDatabase.Ids[0]);
+                string defaultTrackSelected = tracksDatabase.Ids[0];
+                EventDispatcher.Instance.Dispatch(UiEvents.OnTrackButtonPressed, defaultTrackSelected);
                 trackIdButtonPairs[0].button.SetInteractable(false);
                 trackSelected = tracksDatabase.Ids[0];
                 trackPreviewImage.sprite = tracksDatabase.GetFile(trackSelected).TrackPreview;
             }
             else
             {
-                EventDispatcher.Instance.Dispatch(UiEvents.OnTrackButtonPressed, trackSelected);
                 trackSelected = trackSelectionViewData.LastTrackIdSelected;
+                trackPreviewImage.sprite = tracksDatabase.GetFile(trackSelected).TrackPreview;
             }
         }
 
