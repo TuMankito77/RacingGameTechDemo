@@ -351,10 +351,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputBlockerImage: {fileID: 2030701423737940093}
   currentSelectableElementSelected: {fileID: 0}
-  continueButton: {fileID: 1635213243810973896}
+  continueRaceButton: {fileID: 1635213243810973896}
   restartRaceButton: {fileID: 3185820074857151920}
   optionsButton: {fileID: 1718968529317473021}
-  quitButton: {fileID: 8546352303109808597}
+  quitRaceButton: {fileID: 8546352303109808597}
 --- !u!1 &6570039632838349627 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6073630725476258319, guid: 8bc683c1381a7a64a9c262a13760b71e, type: 3}
@@ -963,7 +963,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6591105817601928183, guid: a42fd7b356418db4380f5959e0c094c3, type: 3}
       propertyPath: m_Name
-      value: QuitButton
+      value: QuitRaceButton
       objectReference: {fileID: 0}
     - target: {fileID: 6784977218555756373, guid: a42fd7b356418db4380f5959e0c094c3, type: 3}
       propertyPath: m_Text
