@@ -111,8 +111,11 @@ namespace RacingGameDemo.Runtime.Core
         {
             systemsInitializer.OnSystemsInitialized -= OnSystemsInitialized;
             CreateInputControllers();
-            uiManager.DisplayView(ViewIds.LoadingScreen, disableCurrentInteractableGroup: false);
-            LoadDataBases();
+            BaseView loadingScreenView = uiManager.DisplayView(ViewIds.LoadingScreen, disableCurrentInteractableGroup: false);
+            loadingScreenView.onTransitionInFinished += () =>
+            {
+                LoadDataBases();
+            };
         }
 
         private void CreateInputControllers()
@@ -135,8 +138,13 @@ namespace RacingGameDemo.Runtime.Core
 
         private void ShowMainMenu()
         {
-            uiManager.DisplayView(ViewIds.MainMenu, disableCurrentInteractableGroup: false);
-            inputManager.EnableInput(uiManager);
+            BaseView mainMenuView = uiManager.DisplayView(ViewIds.MainMenu, disableCurrentInteractableGroup: true);
+
+            mainMenuView.onTransitionInFinished += () =>
+            {
+                uiManager.RemoveView(ViewIds.LoadingScreen);
+                inputManager.EnableInput(uiManager);
+            };
         }
 
         private void LoadDataBases()
@@ -174,7 +182,6 @@ namespace RacingGameDemo.Runtime.Core
         {
             if(remainingDatabasesToLoad <= 0)
             {
-                uiManager.RemoveView(ViewIds.LoadingScreen);
                 ShowMainMenu();
             }
         }
@@ -186,21 +193,28 @@ namespace RacingGameDemo.Runtime.Core
             raceSystemsInitializer.InitializeSystems(GetRaceLevelSystems());
         }
 
-        private void OnTrackSceneUnloaded()
-        {
-            BaseView mainMenuView = uiManager.DisplayView(ViewIds.MainMenu, disableCurrentInteractableGroup: true);
-
-            mainMenuView.onTransitionInFinished += () =>
-            {
-                uiManager.RemoveView(ViewIds.LoadingScreen);
-                inputManager.EnableInput(uiManager);
-            };
-        }
-
         private void OnRaceSystemsInitialized()
         {
             inputManager.EnableInput(raceLevelInitializer.GameplayCarInstance);
             uiManager.RemoveView(ViewIds.LoadingScreen);
+        }
+
+        private void LoadTrackScene()
+        {
+            TrackDetails selectedTrackDetails = tracksDatabase.GetFile(raceData.trackIdSelected);
+            string trackSceneName = selectedTrackDetails.TrackScene.SceneName;
+            contentLoader.LoadScene(trackSceneName, LoadSceneMode.Additive, OnTrackSceneLoaded, setAsMainScene: true);
+        }
+
+        private void UnloadTrackScene(Action onTrackSceneUnloaded)
+        {
+            raceLevelInitializer.Dispose();
+            raceLevelInitializer = null;
+            raceSystemsInitializer.Dispose();
+            raceSystemsInitializer = null;
+            TrackDetails selectedTrackDetails = tracksDatabase.GetFile(raceData.trackIdSelected);
+            string trackSceneName = selectedTrackDetails.TrackScene.SceneName;
+            contentLoader.UnloadScene(trackSceneName, onTrackSceneUnloaded);
         }
 
         private void HandleUiEvents(UiEvents uiEvent, object data)
@@ -259,16 +273,14 @@ namespace RacingGameDemo.Runtime.Core
                         inputManager.DisableInput(uiManager);
 
                         BaseView loadingScreenView = uiManager.DisplayView(ViewIds.LoadingScreen, disableCurrentInteractableGroup: true);
-                        
+
                         //NOTE: We are waiting for the removal of this view since all transition outs have the same duration in the current open views and we don't want to see
                         //leftover elements from other views if the race level is loded before these views have finished their transition out animations. 
                         loadingScreenView.onTransitionInFinished += () =>
                         {
-                            TrackDetails selectedTrackDetails = tracksDatabase.GetFile(raceData.trackIdSelected);
-                            string trackSceneName = selectedTrackDetails.TrackScene.SceneName;
-                            contentLoader.LoadScene(trackSceneName, LoadSceneMode.Additive, OnTrackSceneLoaded, setAsMainScene: true);
+                            LoadTrackScene();
                         };
-                        
+
                         uiManager.RemoveView(ViewIds.TrackSelection);
                         uiManager.RemoveView(ViewIds.CarSelection);
                         uiManager.RemoveView(ViewIds.CarShowcase);
@@ -293,6 +305,7 @@ namespace RacingGameDemo.Runtime.Core
                         break;
                     }
 
+                case UiEvents.OnRestartRaceButtonPressed:
                 case UiEvents.OnQuitRaceButtonPressed:
                     {
                         inputManager.DisableInput(uiManager);
@@ -301,13 +314,24 @@ namespace RacingGameDemo.Runtime.Core
                         
                         loadingScreenView.onTransitionInFinished += () =>
                         {
-                            raceLevelInitializer.Dispose();
-                            raceLevelInitializer = null;
-                            raceSystemsInitializer.Dispose();
-                            raceSystemsInitializer = null;
-                            TrackDetails selectedTrackDetails = tracksDatabase.GetFile(raceData.trackIdSelected);
-                            string trackSceneName = selectedTrackDetails.TrackScene.SceneName;
-                            contentLoader.UnloadScene(trackSceneName, OnTrackSceneUnloaded);
+                            Action onTrackSceneUnloaded = null;
+
+                            switch(uiEvent)
+                            {
+                                case UiEvents.OnRestartRaceButtonPressed:
+                                    {
+                                        onTrackSceneUnloaded = LoadTrackScene;
+                                        break;
+                                    }
+
+                                case UiEvents.OnQuitRaceButtonPressed:
+                                    {
+                                        onTrackSceneUnloaded = ShowMainMenu;
+                                        break;
+                                    }
+                            }
+
+                            UnloadTrackScene(onTrackSceneUnloaded);
                         };
 
                         break;
