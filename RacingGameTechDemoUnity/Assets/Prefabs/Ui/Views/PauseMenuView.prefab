@@ -967,7 +967,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6784977218555756373, guid: a42fd7b356418db4380f5959e0c094c3, type: 3}
       propertyPath: m_Text
-      value: Quit
+      value: QuitRace
       objectReference: {fileID: 0}
     - target: {fileID: 7919552750002314802, guid: a42fd7b356418db4380f5959e0c094c3, type: 3}
       propertyPath: m_Pivot.x
@@ -1051,7 +1051,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8177836413900475592, guid: a42fd7b356418db4380f5959e0c094c3, type: 3}
       propertyPath: localizationKey
-      value: Button.Quit
+      value: Button.QuitRace
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
