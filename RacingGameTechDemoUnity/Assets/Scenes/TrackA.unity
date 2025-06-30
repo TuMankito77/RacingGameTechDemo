@@ -173,7 +173,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 4a1dd94fa20c75d46967f71bbe1ab8d2, type: 2}
     - target: {fileID: 919132149155446097, guid: b86adf8244b07424b9814cd583fe3bb2, type: 3}
       propertyPath: m_Name
-      value: RaceTrack3Dmodel4
+      value: RaceTrack3Dmodel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
