@@ -26,10 +26,11 @@ namespace GameBoxSdk.Runtime.UI
         private Camera uiCamera = null;
         private List<BaseView> viewsOpened = null;
         private EventSystem eventSystem = null;
-        private int currentInteractbleGroupId = 0;
         private Func<string, string> getLocalizedText = null;
         private Action<ClipIds> playClipOnce = null;
 
+        public int TopInteractbleGroupId { get; private set; } = 0;
+        
         public UiManager(Func<string, string> sourceGetLocalizedText, Action<ClipIds> sourcePlayClipOnce) : base()
         {
             getLocalizedText = sourceGetLocalizedText;
@@ -72,34 +73,20 @@ namespace GameBoxSdk.Runtime.UI
             return true;
         }
 
-        public BaseView DisplayView(ViewIds viewId, bool disableCurrentInteractableGroup, ViewInjectableData viewInjectableData = null)
+        public BaseView DisplayView(ViewIds viewId, bool placeInSeparateInteractableGroup, ViewInjectableData viewInjectableData = null, int interactableGroupStackPlacement = 0)
         {
-            if(disableCurrentInteractableGroup)
-            {
-                for(int i = viewsOpened.Count - 1; i >= 0; i--)
-                {
-                    BaseView view = viewsOpened[i];
-                    
-                    if (view.InteractableGroupId != currentInteractbleGroupId)
-                    {
-                        break;
-                    }
-
-                    view.SetInteractable(false);
-                }
-                
-                currentInteractbleGroupId++;
-            }
-
+            GetViewIndexAndInteractableGroupId(interactableGroupStackPlacement, placeInSeparateInteractableGroup, out int viewIndex, out int interactableGroupId);
+            DisableBottomViews(viewIndex, interactableGroupId);
             BaseView viewFound = GameObject.Instantiate(viewsDatabase.GetFile(viewId.ToString()), uiManagerGO.transform);
-            viewFound.Initialize(uiCamera, playClipOnce, viewInjectableData, getLocalizedText, eventSystem);
+            viewFound.Initialize(this, uiCamera, playClipOnce, viewInjectableData, getLocalizedText, eventSystem);
             //NOTE: This will update the values like the width and height so that they do not appear as zero,
             //dunno how I will remind this to myself -_-, BUT remember, we have to do this before trying to access any RectTransform values
             Canvas.ForceUpdateCanvases();
-            viewFound.Canvas.sortingOrder = viewsOpened.Count;
-            viewFound.TransitionIn(currentInteractbleGroupId);
+            viewFound.Canvas.sortingOrder = viewIndex;
+            viewFound.TransitionIn(interactableGroupId);
             viewFound.transform.SetParent(uiManagerGO.transform);
-            viewsOpened.Add(viewFound);
+            viewsOpened.Insert(viewIndex, viewFound);
+            TopInteractbleGroupId = viewsOpened[viewsOpened.Count - 1].InteractableGroupId;
             return viewFound;
         }
 
@@ -146,7 +133,7 @@ namespace GameBoxSdk.Runtime.UI
 
         public void RemoveTopStackInteractableGroup()
         {
-            while(CurrentViewDisplayed().InteractableGroupId == currentInteractbleGroupId)
+            while(CurrentViewDisplayed().InteractableGroupId == TopInteractbleGroupId)
             {
                 RemoveTopStackView();
             }
@@ -172,15 +159,15 @@ namespace GameBoxSdk.Runtime.UI
 
                 BaseView currentViewDisplayed = CurrentViewDisplayed();
 
-                if (currentViewDisplayed != null && currentViewDisplayed.InteractableGroupId != currentInteractbleGroupId)
+                if (currentViewDisplayed != null && currentViewDisplayed.InteractableGroupId != TopInteractbleGroupId)
                 {
-                    currentInteractbleGroupId = currentViewDisplayed.InteractableGroupId;
+                    TopInteractbleGroupId = currentViewDisplayed.InteractableGroupId;
 
                     for(int i = viewsOpened.Count - 1; i >= 0; i--)
                     {
                         BaseView view = viewsOpened[i];
 
-                        if (view.InteractableGroupId != currentInteractbleGroupId)
+                        if (view.InteractableGroupId != TopInteractbleGroupId)
                         {
                             break;
                         }
@@ -192,6 +179,117 @@ namespace GameBoxSdk.Runtime.UI
 
             view.onTransitionOutFinished += OnTransitionOutFinished;
             view.TransitionOut();
+        }
+
+        private void GetViewIndexAndInteractableGroupId(int interactableGroupStackPlacement, bool placeInSeparateInteractableGroup, out int viewIndex, out int interactableGroupId)
+        {
+            if(placeInSeparateInteractableGroup)
+            {
+                FindViewIndexAddingNewGroupId(interactableGroupStackPlacement, out viewIndex, out interactableGroupId);
+            }
+            else
+            {
+                FindViewIndexWithinExistingGroupIds(interactableGroupStackPlacement, out viewIndex, out interactableGroupId);
+            }
+        }
+
+        private void FindViewIndexAddingNewGroupId(int interactableGroupStackPlacement, out int viewIndex, out int interactableGroupId)
+        {
+            int lastInteractableGroupIdPassed = TopInteractbleGroupId + 1;
+            int groupIdsPassed = 0;
+            int openedViewIndex = viewsOpened.Count - 1;
+            
+            while(groupIdsPassed < interactableGroupStackPlacement && openedViewIndex >= 0)
+            {
+                BaseView openedView = viewsOpened[openedViewIndex];
+
+                if(lastInteractableGroupIdPassed != openedView.InteractableGroupId)
+                {
+                    lastInteractableGroupIdPassed = openedView.InteractableGroupId;
+                    groupIdsPassed++;
+
+                    if (groupIdsPassed > interactableGroupStackPlacement)
+                    {
+                        viewIndex = openedViewIndex + 1;
+                        interactableGroupId = openedView.InteractableGroupId + 1;
+                        return;
+                    }
+                }
+
+                openedView.IncreaseInteractableGroupId();
+                openedView.Canvas.sortingOrder++;
+                openedViewIndex--;
+            }
+
+            if(openedViewIndex < 0)
+            {
+                viewIndex = 0;
+                interactableGroupId = 0;
+            }
+            else
+            {
+                viewIndex = viewsOpened.Count;
+                interactableGroupId = TopInteractbleGroupId + 1;
+            }
+        }
+
+        private void FindViewIndexWithinExistingGroupIds(int interactableGroupStackPlacement, out int viewIndex, out int interactableGroupId)
+        {
+            int lastInteractableGroupIdPassed = TopInteractbleGroupId;
+            int groupIdsPassed = 0;
+            int openedViewIndex = viewsOpened.Count - 1; 
+
+            while (groupIdsPassed < interactableGroupStackPlacement && openedViewIndex >= 0)
+            {
+                BaseView openedView = viewsOpened[openedViewIndex];
+
+                if (lastInteractableGroupIdPassed != openedView.InteractableGroupId)
+                {
+                    lastInteractableGroupIdPassed = openedView.InteractableGroupId;
+                    groupIdsPassed++;
+
+                    if (groupIdsPassed == interactableGroupStackPlacement)
+                    {
+                        viewIndex = openedViewIndex + 1;
+                        interactableGroupId = openedView.InteractableGroupId;
+                        return;
+                    }
+                }
+
+                openedView.Canvas.sortingOrder++;
+                openedViewIndex--;
+            }
+
+            if(openedViewIndex < 0)
+            {
+                viewIndex = 0;
+                interactableGroupId = 0;
+            }
+            else
+            {
+                viewIndex = viewsOpened.Count;
+                interactableGroupId = TopInteractbleGroupId;
+            }
+        }
+
+        private void DisableBottomViews(int startingIndex, int correspondingInteractableGroupId)
+        {
+            for (int i = startingIndex - 1; i >= 0; i--)
+            {
+                BaseView openedView = viewsOpened[i];
+
+                if (!openedView.IsInteractable)
+                {
+                    break;
+                }
+
+                if (openedView.InteractableGroupId == correspondingInteractableGroupId)
+                {
+                    continue;
+                }
+
+                openedView.SetInteractable(false);
+            }
         }
     }
 }

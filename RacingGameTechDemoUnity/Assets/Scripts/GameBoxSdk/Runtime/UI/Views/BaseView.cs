@@ -23,13 +23,14 @@ namespace GameBoxSdk.Runtime.UI.Views
         private ButtonAudioPlayer[] buttonAudioPlayers = new ButtonAudioPlayer[0];
         private SelectableElement[] selectableElements = new SelectableElement[0];
         private IViewAnimator viewAnimator = null;
-        private int interactableGroupId = -1;
         private EventSystem eventSystem = null;
+        private UiManager uiManager = null;
 
         public Canvas Canvas { get; private set; } = null;
         public CanvasGroup CanvasGroup { get; private set; } = null;
         public CanvasScaler CanvasScaler { get; private set; } = null;
-        public int InteractableGroupId { get => interactableGroupId; private set => interactableGroupId = value; }
+        public int InteractableGroupId { get; private set; } = -1;
+        public bool IsInteractable { get; private set; } = true;
         public SelectableElement[] SelectableElements => selectableElements;
         public SelectableElement currentSelectableElementSelected = null;
 
@@ -51,7 +52,6 @@ namespace GameBoxSdk.Runtime.UI.Views
 
         protected virtual void OnDestroy()
         {
-
             if (viewAnimator != null)
             {
                 viewAnimator.OnTransitionInAnimationCompleted -= OnTransitionInAnimationCompleted;
@@ -65,9 +65,10 @@ namespace GameBoxSdk.Runtime.UI.Views
         {
             inputBlockerImage.raycastTarget = !isInractable;
             CanvasGroup.interactable = isInractable;
+            IsInteractable = isInractable;
         }
 
-        public virtual void Initialize(Camera uiCamera, Action<ClipIds> playClipOnce, ViewInjectableData viewInjectableData, Func<string, string> getLocalizedText, EventSystem sourceEventSystem)
+        public virtual void Initialize(UiManager sourceUiManager, Camera uiCamera, Action<ClipIds> playClipOnce, ViewInjectableData viewInjectableData, Func<string, string> getLocalizedText, EventSystem sourceEventSystem)
         {
             Canvas = GetComponent<Canvas>();
             CanvasGroup = GetComponent<CanvasGroup>();
@@ -76,6 +77,7 @@ namespace GameBoxSdk.Runtime.UI.Views
             Canvas.worldCamera = uiCamera;
             CanvasScaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             eventSystem = sourceEventSystem;
+            uiManager = sourceUiManager;
 
             foreach(ButtonAudioPlayer buttonAudioPlayer in buttonAudioPlayers)
             {
@@ -94,9 +96,9 @@ namespace GameBoxSdk.Runtime.UI.Views
             CanvasGroup = null;
         }
 
-        public virtual void TransitionIn(int sourceInteractableGroupId)
+        public virtual void TransitionIn(int interactableGroupId)
         {
-            InteractableGroupId = sourceInteractableGroupId;
+            InteractableGroupId = interactableGroupId;
             CanvasGroup.alpha = 1;
 
             if(viewAnimator != null)
@@ -106,7 +108,7 @@ namespace GameBoxSdk.Runtime.UI.Views
             }
             else
             {
-                SetInteractable(true);
+                SetInteractable(uiManager.TopInteractbleGroupId == InteractableGroupId);
                 onTransitionInFinished?.Invoke();
             }
         }
@@ -134,6 +136,7 @@ namespace GameBoxSdk.Runtime.UI.Views
 
             if(viewAnimator != null)
             {
+                viewAnimator.OnTransitionInAnimationCompleted -= OnTransitionInAnimationCompleted;
                 viewAnimator.PlayTransitionOut();
             }
             else
@@ -141,6 +144,11 @@ namespace GameBoxSdk.Runtime.UI.Views
                 CanvasGroup.alpha = 0;
                 onTransitionOutFinished?.Invoke();
             }
+        }
+
+        public void IncreaseInteractableGroupId()
+        {
+            InteractableGroupId++;
         }
 
         protected void DisplayMissingInjectableViewDataError()
@@ -169,7 +177,7 @@ namespace GameBoxSdk.Runtime.UI.Views
 
         private void OnTransitionInAnimationCompleted()
         {
-            SetInteractable(true);
+            SetInteractable(uiManager.TopInteractbleGroupId == InteractableGroupId);
             onTransitionInFinished?.Invoke();
         }
     }

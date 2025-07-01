@@ -111,7 +111,7 @@ namespace RacingGameDemo.Runtime.Core
         {
             systemsInitializer.OnSystemsInitialized -= OnSystemsInitialized;
             CreateInputControllers();
-            BaseView loadingScreenView = uiManager.DisplayView(ViewIds.LoadingScreen, disableCurrentInteractableGroup: false);
+            BaseView loadingScreenView = uiManager.DisplayView(ViewIds.LoadingScreen, placeInSeparateInteractableGroup: false);
             loadingScreenView.onTransitionInFinished += () =>
             {
                 LoadDataBases();
@@ -138,7 +138,8 @@ namespace RacingGameDemo.Runtime.Core
 
         private void ShowMainMenu()
         {
-            BaseView mainMenuView = uiManager.DisplayView(ViewIds.MainMenu, disableCurrentInteractableGroup: true);
+            int interactableGroupStackPlacement = uiManager.GetTopStackView(ViewIds.LoadingScreen).InteractableGroupId + 1;
+            BaseView mainMenuView = uiManager.DisplayView(ViewIds.MainMenu, placeInSeparateInteractableGroup: true, null, interactableGroupStackPlacement);
 
             mainMenuView.onTransitionInFinished += () =>
             {
@@ -224,9 +225,9 @@ namespace RacingGameDemo.Runtime.Core
                 case UiEvents.OnStartRaceButtonPressed:
                     {
                         CarShowcaseViewData carShowcaseViewData = new CarShowcaseViewData(carsDatabase);
-                        uiManager.DisplayView(ViewIds.CarShowcase, disableCurrentInteractableGroup: true, carShowcaseViewData);
+                        uiManager.DisplayView(ViewIds.CarShowcase, placeInSeparateInteractableGroup: true, carShowcaseViewData);
                         CarSelectionViewData carSelectionViewData = new CarSelectionViewData(carsDatabase, raceData.carIdSelected);
-                        uiManager.DisplayView(ViewIds.CarSelection, disableCurrentInteractableGroup: false, carSelectionViewData);
+                        uiManager.DisplayView(ViewIds.CarSelection, placeInSeparateInteractableGroup: false, carSelectionViewData);
                         break;
                     }
 
@@ -243,7 +244,7 @@ namespace RacingGameDemo.Runtime.Core
                         CarShowcaseView carShowcaseView = uiManager.GetTopStackView(ViewIds.CarShowcase) as CarShowcaseView;
                         inputManager.DisableInput(carShowcaseView);
                         CarSelectionViewData carSelectionViewData = new CarSelectionViewData(carsDatabase, raceData.carIdSelected);
-                        uiManager.DisplayView(ViewIds.CarSelection, disableCurrentInteractableGroup: false, carSelectionViewData);
+                        uiManager.DisplayView(ViewIds.CarSelection, placeInSeparateInteractableGroup: false, carSelectionViewData);
                         break;
                     }
                 
@@ -257,7 +258,7 @@ namespace RacingGameDemo.Runtime.Core
                 case UiEvents.OnSelectCarButtonPressed:
                     {
                         TrackSelectionViewData trackSelectionViewData = new TrackSelectionViewData(tracksDatabase, raceData.trackIdSelected);
-                        uiManager.DisplayView(ViewIds.TrackSelection, disableCurrentInteractableGroup: true, trackSelectionViewData);
+                        uiManager.DisplayView(ViewIds.TrackSelection, placeInSeparateInteractableGroup: true, trackSelectionViewData);
                         break;
                     }
 
@@ -272,7 +273,7 @@ namespace RacingGameDemo.Runtime.Core
                     {
                         inputManager.DisableInput(uiManager);
 
-                        BaseView loadingScreenView = uiManager.DisplayView(ViewIds.LoadingScreen, disableCurrentInteractableGroup: true);
+                        BaseView loadingScreenView = uiManager.DisplayView(ViewIds.LoadingScreen, placeInSeparateInteractableGroup: true);
 
                         //NOTE: We are waiting for the removal of this view since all transition outs have the same duration in the current open views and we don't want to see
                         //leftover elements from other views if the race level is loded before these views have finished their transition out animations. 
@@ -292,7 +293,7 @@ namespace RacingGameDemo.Runtime.Core
                     {
                         inputManager.DisableInput(raceLevelInitializer.GameplayCarInstance);
                         inputManager.EnableInput(uiManager);
-                        uiManager.DisplayView(ViewIds.PauseMenu, disableCurrentInteractableGroup: true);
+                        uiManager.DisplayView(ViewIds.PauseMenu, placeInSeparateInteractableGroup: true);
                         break;
                     }
 
@@ -310,7 +311,7 @@ namespace RacingGameDemo.Runtime.Core
                     {
                         inputManager.DisableInput(uiManager);
                         uiManager.RemoveView(ViewIds.PauseMenu);
-                        BaseView loadingScreenView = uiManager.DisplayView(ViewIds.LoadingScreen, disableCurrentInteractableGroup: true);
+                        BaseView loadingScreenView = uiManager.DisplayView(ViewIds.LoadingScreen, placeInSeparateInteractableGroup: true);
                         
                         loadingScreenView.onTransitionInFinished += () =>
                         {

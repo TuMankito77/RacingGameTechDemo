@@ -7,6 +7,7 @@ namespace RacingGameDemo.Runtime.UI.Views
     using UnityEngine.UI;
     using UnityEngine.EventSystems;
 
+    using GameBoxSdk.Runtime.UI;
     using GameBoxSdk.Runtime.UI.CoreElements;
     using GameBoxSdk.Runtime.UI.Views;
     using GameBoxSdk.Runtime.Sound;
@@ -40,9 +41,9 @@ namespace RacingGameDemo.Runtime.UI.Views
         private List<TrackIdButtonPair> trackIdButtonPairs = null;
         private string trackSelected = string.Empty;
 
-        public override void Initialize(Camera uiCamera, Action<ClipIds> playClipOnce, ViewInjectableData viewInjectableData, Func<string, string> getLocalizedText, EventSystem sourceEventSystem)
+        public override void Initialize(UiManager sourceUiManager, Camera uiCamera, Action<ClipIds> playClipOnce, ViewInjectableData viewInjectableData, Func<string, string> getLocalizedText, EventSystem sourceEventSystem)
         {
-            base.Initialize(uiCamera, playClipOnce, viewInjectableData, getLocalizedText, sourceEventSystem);
+            base.Initialize(sourceUiManager, uiCamera, playClipOnce, viewInjectableData, getLocalizedText, sourceEventSystem);
 
             trackIdButtonPairs = new List<TrackIdButtonPair>();
             TrackSelectionViewData trackSelectionViewData = viewInjectableData as TrackSelectionViewData;
