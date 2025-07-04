@@ -25,6 +25,8 @@ MonoBehaviour:
     file: {fileID: -1786492168109209968, guid: d145882acde7055479c0959cc9d03419, type: 3}
   - id: PauseMenu
     file: {fileID: -1187000897463938995, guid: 71cc633d2c370d644aae4c20f04b2f3f, type: 3}
+  - id: MessageWindow
+    file: {fileID: -7218410591344668709, guid: adf0a2e6b68348241a905b1abc7d2935, type: 3}
   viewsLayerMask:
     serializedVersion: 2
     m_Bits: 32
