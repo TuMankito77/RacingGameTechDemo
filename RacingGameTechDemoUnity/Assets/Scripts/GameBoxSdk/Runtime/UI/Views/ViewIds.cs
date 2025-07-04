@@ -11,6 +11,7 @@ namespace GameBoxSdk.Runtime.UI.Views
 		CarShowcase,
 		TrackSelection,
 		PauseMenu,
+		MessageWindow,
 	}
 }
 
