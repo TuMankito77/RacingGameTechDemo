@@ -307,34 +307,20 @@ namespace RacingGameDemo.Runtime.Core
                     }
 
                 case UiEvents.OnRestartRaceButtonPressed:
+                    {
+                        string message = localizationManager.GetLocalizedText("RestartRaceLocMessage.");
+                        MessageWindowViewData messageWindowViewData = new MessageWindowViewData(message, displayCancelButton: true);
+                        MessageWindowView messageView = uiManager.DisplayView(ViewIds.MessageWindow, placeInSeparateInteractableGroup: true, messageWindowViewData) as MessageWindowView;
+                        messageView.ConfirmButton.onButtonPressed += RestartRace;
+                        break;
+                    }
+
                 case UiEvents.OnQuitRaceButtonPressed:
                     {
-                        inputManager.DisableInput(uiManager);
-                        uiManager.RemoveView(ViewIds.PauseMenu);
-                        BaseView loadingScreenView = uiManager.DisplayView(ViewIds.LoadingScreen, placeInSeparateInteractableGroup: true);
-                        
-                        loadingScreenView.onTransitionInFinished += () =>
-                        {
-                            Action onTrackSceneUnloaded = null;
-
-                            switch(uiEvent)
-                            {
-                                case UiEvents.OnRestartRaceButtonPressed:
-                                    {
-                                        onTrackSceneUnloaded = LoadTrackScene;
-                                        break;
-                                    }
-
-                                case UiEvents.OnQuitRaceButtonPressed:
-                                    {
-                                        onTrackSceneUnloaded = ShowMainMenu;
-                                        break;
-                                    }
-                            }
-
-                            UnloadTrackScene(onTrackSceneUnloaded);
-                        };
-
+                        string message = localizationManager.GetLocalizedText("QuitRaceLocMessage.");
+                        MessageWindowViewData messageWindowViewData = new MessageWindowViewData(message, displayCancelButton: true);
+                        MessageWindowView messageView = uiManager.DisplayView(ViewIds.MessageWindow, placeInSeparateInteractableGroup: true, messageWindowViewData) as MessageWindowView;
+                        messageView.ConfirmButton.onButtonPressed += QuitRace;
                         break;
                     }
 
@@ -343,6 +329,32 @@ namespace RacingGameDemo.Runtime.Core
                         break;
                     }
             }
+        }
+
+        private void RestartRace()
+        {
+            inputManager.DisableInput(uiManager);
+            BaseView loadingScreenView = uiManager.DisplayView(ViewIds.LoadingScreen, placeInSeparateInteractableGroup: true);
+
+            loadingScreenView.onTransitionInFinished += () =>
+            {
+                uiManager.RemoveView(ViewIds.MessageWindow);
+                uiManager.RemoveView(ViewIds.PauseMenu);
+                UnloadTrackScene(onTrackSceneUnloaded: LoadTrackScene);
+            };
+        }
+        
+        private void QuitRace()
+        {
+            inputManager.DisableInput(uiManager);
+            BaseView loadingScreenView = uiManager.DisplayView(ViewIds.LoadingScreen, placeInSeparateInteractableGroup: true);
+
+            loadingScreenView.onTransitionInFinished += () =>
+            {
+                uiManager.RemoveView(ViewIds.MessageWindow);
+                uiManager.RemoveView(ViewIds.PauseMenu);
+                UnloadTrackScene(onTrackSceneUnloaded: ShowMainMenu);
+            };
         }
     }
 }
