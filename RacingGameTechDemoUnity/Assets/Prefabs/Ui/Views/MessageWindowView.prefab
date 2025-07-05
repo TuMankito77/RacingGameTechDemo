@@ -255,13 +255,8 @@ MonoBehaviour:
     m_RotationOrder: 4
   rootContainer: {fileID: 8705870945561302076}
   uiElementAnimConfigurations:
-  - rectTransform: {fileID: 1420005327204269249}
+  - rectTransform: {fileID: 4206993957454196808}
     horizontalEntranceDirection: 1
-    verticalEntranceDirection: 0
-    startPosition: {x: 0, y: 0}
-    targetPosition: {x: 0, y: 0}
-  - rectTransform: {fileID: 0}
-    horizontalEntranceDirection: -1
     verticalEntranceDirection: 0
     startPosition: {x: 0, y: 0}
     targetPosition: {x: 0, y: 0}
@@ -662,14 +657,17 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6591105817601928183, guid: a42fd7b356418db4380f5959e0c094c3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7919565640405667053}
   m_SourcePrefab: {fileID: 100100000, guid: a42fd7b356418db4380f5959e0c094c3, type: 3}
 --- !u!114 &1912918224731969942 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4116343465198919771, guid: a42fd7b356418db4380f5959e0c094c3, type: 3}
   m_PrefabInstance: {fileID: 2570495934847498701}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 8706711243287155258}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bec8debc353ef7d4da92e7fd15668ca9, type: 3}
@@ -680,6 +678,25 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7919552750002314802, guid: a42fd7b356418db4380f5959e0c094c3, type: 3}
   m_PrefabInstance: {fileID: 2570495934847498701}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &8706711243287155258 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6591105817601928183, guid: a42fd7b356418db4380f5959e0c094c3, type: 3}
+  m_PrefabInstance: {fileID: 2570495934847498701}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7919565640405667053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8706711243287155258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83f6d307f4c21dd489f451a8cdf3edc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controlPathSelected: <Gamepad>/{Back}
+  linkedButton: {fileID: 1912918224731969942}
 --- !u!1001 &8880544862298511910
 PrefabInstance:
   m_ObjectHideFlags: 0
