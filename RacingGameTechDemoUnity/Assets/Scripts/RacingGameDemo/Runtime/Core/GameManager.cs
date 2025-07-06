@@ -308,7 +308,7 @@ namespace RacingGameDemo.Runtime.Core
 
                 case UiEvents.OnRestartRaceButtonPressed:
                     {
-                        string message = localizationManager.GetLocalizedText("RestartRaceLocMessage.");
+                        string message = localizationManager.GetLocalizedText("RestartRaceLocalizedMessage.");
                         MessageWindowViewData messageWindowViewData = new MessageWindowViewData(message, displayCancelButton: true);
                         MessageWindowView messageView = uiManager.DisplayView(ViewIds.MessageWindow, placeInSeparateInteractableGroup: true, messageWindowViewData) as MessageWindowView;
                         messageView.ConfirmButton.onButtonPressed += RestartRace;
@@ -317,7 +317,7 @@ namespace RacingGameDemo.Runtime.Core
 
                 case UiEvents.OnQuitRaceButtonPressed:
                     {
-                        string message = localizationManager.GetLocalizedText("QuitRaceLocMessage.");
+                        string message = localizationManager.GetLocalizedText("QuitRaceLocalizedMessage.");
                         MessageWindowViewData messageWindowViewData = new MessageWindowViewData(message, displayCancelButton: true);
                         MessageWindowView messageView = uiManager.DisplayView(ViewIds.MessageWindow, placeInSeparateInteractableGroup: true, messageWindowViewData) as MessageWindowView;
                         messageView.ConfirmButton.onButtonPressed += QuitRace;
