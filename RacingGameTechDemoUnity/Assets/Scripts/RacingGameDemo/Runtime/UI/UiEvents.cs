@@ -16,7 +16,10 @@ namespace RacingGameDemo.Runtime.UI
         OnUnpuaseButtonPressed,
         OnContinueRaceButtonPressed,
         OnRestartRaceButtonPressed,
-        OnQuitRaceButtonPressed
+        OnQuitRaceButtonPressed,
+        OnMasterVolumeChanged,
+        OnMusicVolumeChanged,
+        OnSoundEffectsVolumeChanged
     }
 }
 

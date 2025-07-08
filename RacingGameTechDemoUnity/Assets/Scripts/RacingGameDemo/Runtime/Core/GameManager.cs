@@ -324,6 +324,28 @@ namespace RacingGameDemo.Runtime.Core
                         break;
                     }
 
+                case UiEvents.OnMasterVolumeChanged:
+                    {
+                        float volume = (float)data;
+                        audioManager.UpdateMusicVolume(volume);
+                        audioManager.UpdateVFXMusicVolume(volume);
+                        break;
+                    }
+
+                case UiEvents.OnMusicVolumeChanged:
+                    {
+                        float volume = (float)data;
+                        audioManager.UpdateMusicVolume(volume);
+                        break;
+                    }
+
+                case UiEvents.OnSoundEffectsVolumeChanged:
+                    {
+                        float volume = (float)data;
+                        audioManager.UpdateVFXMusicVolume(volume);
+                        break;
+                    }
+
                 default:
                     {
                         break;
