@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1527165750902891846}
   - component: {fileID: 1814254671157805605}
+  - component: {fileID: 1509543750572227038}
+  - component: {fileID: 7264538819027678424}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -90,6 +92,88 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1509543750572227038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916909282914361073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e421ec1d5c16614686a340acef8700a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventTrigger: {fileID: 0}
+  deselectAfterSubmitAction: 1
+  selectableElementNeighborGroups: []
+  slider: {fileID: 1814254671157805605}
+  sliderSelectedColor: {r: 1, g: 1, b: 1, a: 1}
+  fillerImage: {fileID: 6310494490046096023}
+  backgroundFillerImage: {fileID: 8408838493622557597}
+--- !u!114 &7264538819027678424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916909282914361073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6918040983ab3bc499e8e5740adc73c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  submitAnimationDuration: 0.5
+  selectAnimationDuration: 0.25
+  playAnimationOnSubmit: 1
+  selectAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0.20000005
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1.2
+      inSlope: 0.20000005
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  submitAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.5
+      inSlope: 0
+      outSlope: 0.5
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.5
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1495712184956094220
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +221,6 @@ GameObject:
   - component: {fileID: 5137300958425200022}
   - component: {fileID: 785922486474102508}
   - component: {fileID: 1743197469187748588}
-  - component: {fileID: 7172308372818830382}
   m_Layer: 5
   m_Name: BaseSlider
   m_TagString: Untagged
@@ -212,25 +295,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &7172308372818830382
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2181764931899508717}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e421ec1d5c16614686a340acef8700a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  eventTrigger: {fileID: 0}
-  deselectAfterSubmitAction: 1
-  selectableElementNeighborGroups: []
-  slider: {fileID: 1814254671157805605}
-  sliderSelectedColor: {r: 1, g: 1, b: 1, a: 1}
-  fillerImage: {fileID: 6310494490046096023}
-  backgroundFillerImage: {fileID: 8408838493622557597}
 --- !u!1 &3005356784404241106
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,7 +622,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textComponent: {fileID: 5726297286716301943}
-  localizationKey: Button.StartRace
+  localizationKey: Slider.LocKey
 --- !u!222 &1571575378244113748
 CanvasRenderer:
   m_ObjectHideFlags: 0
