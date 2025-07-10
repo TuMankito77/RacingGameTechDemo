@@ -21,6 +21,8 @@ namespace RacingGameDemo.Runtime.Core
     using RacingGameDemo.Runtime.UI.Views.Data;
     using RacingGameDemo.Runtime.UI.Views;
     using RacingGameDemo.Runtime.Gameplay.Track;
+    using GameBoxSdk.Runtime.SaveTool;
+    using RacingGameDemo.Runtime.SotorableClasses;
 
     public class GameManager : IListener
     {
@@ -34,8 +36,10 @@ namespace RacingGameDemo.Runtime.Core
         private UiManager uiManager = null;
         private InputManager inputManager = null;
         private RaceLevelInitializer raceLevelInitializer = null;
+        private StorageAccessor storageAccessor = null;
         private CarsDatabase carsDatabase = null;
         private TracksDatabase tracksDatabase = null;
+        private GameSettings gameSettings = null;
         private int remainingDatabasesToLoad = 0;
 
         public GameManager()
@@ -111,6 +115,9 @@ namespace RacingGameDemo.Runtime.Core
         {
             systemsInitializer.OnSystemsInitialized -= OnSystemsInitialized;
             CreateInputControllers();
+            LoadSavedData();
+            audioManager.UpdateMusicVolume(Mathf.Min(gameSettings.MasterVolume, gameSettings.MusicVolume));
+            audioManager.UpdateVFXMusicVolume(Math.Min(gameSettings.MasterVolume, gameSettings.SoundEffectsVolume));
             BaseView loadingScreenView = uiManager.DisplayView(ViewIds.LoadingScreen, placeInSeparateInteractableGroup: false);
             loadingScreenView.onTransitionInFinished += () =>
             {
@@ -324,25 +331,38 @@ namespace RacingGameDemo.Runtime.Core
                         break;
                     }
 
+                case UiEvents.OnOptionsButtonPressed:
+                    {
+                        OptionsMenuViewData optionsMenuViewData = new OptionsMenuViewData(gameSettings.MasterVolume, gameSettings.MusicVolume, gameSettings.SoundEffectsVolume);
+                        uiManager.DisplayView(ViewIds.OptionsMenu, placeInSeparateInteractableGroup: true, optionsMenuViewData, interactableGroupStackPlacement: 0);
+                        break;
+                    }
+
                 case UiEvents.OnMasterVolumeChanged:
                     {
                         float volume = (float)data;
-                        audioManager.UpdateMusicVolume(volume);
-                        audioManager.UpdateVFXMusicVolume(volume);
+                        audioManager.UpdateMusicVolume(Mathf.Min(volume,gameSettings.MusicVolume));
+                        audioManager.UpdateVFXMusicVolume(Mathf.Min(volume, gameSettings.SoundEffectsVolume));
+                        gameSettings.MasterVolume = volume;
+                        storageAccessor.Save(gameSettings);
                         break;
                     }
 
                 case UiEvents.OnMusicVolumeChanged:
                     {
                         float volume = (float)data;
-                        audioManager.UpdateMusicVolume(volume);
+                        audioManager.UpdateMusicVolume(Mathf.Min(volume, gameSettings.MusicVolume));
+                        gameSettings.MusicVolume = volume;
+                        storageAccessor.Save(gameSettings);
                         break;
                     }
 
                 case UiEvents.OnSoundEffectsVolumeChanged:
                     {
                         float volume = (float)data;
-                        audioManager.UpdateVFXMusicVolume(volume);
+                        audioManager.UpdateVFXMusicVolume(Mathf.Min(volume, gameSettings.SoundEffectsVolume));
+                        gameSettings.SoundEffectsVolume = volume;
+                        storageAccessor.Save(gameSettings);
                         break;
                     }
 
@@ -377,6 +397,24 @@ namespace RacingGameDemo.Runtime.Core
                 uiManager.RemoveView(ViewIds.PauseMenu);
                 UnloadTrackScene(onTrackSceneUnloaded: ShowMainMenu);
             };
+        }
+
+        private void LoadSavedData()
+        {
+            gameSettings = new GameSettings
+                (
+                    sourceMasterVolume: 1,
+                    sourceMusicVolume: 1,
+                    sourceSoundEffectsVolume: 1
+                );
+
+            storageAccessor = new StorageAccessor();
+
+            if(storageAccessor.DoesInformationExist(gameSettings.Key))
+            {
+                GameSettings gameSettignsFound = storageAccessor.Load<GameSettings>(gameSettings.Key);
+                gameSettignsFound.TransferValidValues(ref gameSettings);
+            }
         }
     }
 }

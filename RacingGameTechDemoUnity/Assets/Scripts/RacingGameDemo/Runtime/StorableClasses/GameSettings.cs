@@ -25,5 +25,31 @@ namespace RacingGameDemo.Runtime.SotorableClasses
 
         [JsonIgnore]
         public float SoundEffectsVolume { get => soundEffectsVolume.Value; set => soundEffectsVolume = value; }
+
+        [JsonConstructor]
+        public GameSettings(float? sourceMasterVolume, float? sourceMusicVolume, float? sourceSoundEffectsVolume)
+        {
+            masterVolume = sourceMasterVolume;
+            musicVolume = sourceMusicVolume;
+            soundEffectsVolume = sourceSoundEffectsVolume;
+        }
+
+        public void TransferValidValues(ref GameSettings gameSettings)
+        {
+            if(masterVolume != null)
+            {
+                gameSettings.masterVolume = masterVolume;
+            }
+
+            if(musicVolume != null)
+            {
+                gameSettings.musicVolume = musicVolume;
+            }
+
+            if(soundEffectsVolume != null)
+            {
+                gameSettings.soundEffectsVolume = soundEffectsVolume;
+            }
+        }
     }
 }

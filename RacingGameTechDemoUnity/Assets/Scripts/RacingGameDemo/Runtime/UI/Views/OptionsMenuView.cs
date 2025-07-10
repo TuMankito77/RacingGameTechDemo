@@ -1,10 +1,17 @@
 namespace RacingGameDemo.Runtime.UI.Views
 {
+    using System;
+    
     using UnityEngine;
+    using UnityEngine.EventSystems;
     
     using GameBoxSdk.Runtime.UI.Views;
     using GameBoxSdk.Runtime.UI.CoreElements;
     using GameBoxSdk.Runtime.Events;
+    using GameBoxSdk.Runtime.UI;
+    using GameBoxSdk.Runtime.Sound;
+    using GameBoxSdk.Runtime.UI.Views.DataContainers;
+    using RacingGameDemo.Runtime.UI.Views.Data;
 
     public class OptionsMenuView : BaseView
     {
@@ -16,6 +23,20 @@ namespace RacingGameDemo.Runtime.UI.Views
 
         [SerializeField]
         private BaseSlider soundEffectsVolumeSlider = null;
+
+        public override void Initialize(UiManager sourceUiManager, Camera uiCamera, Action<ClipIds> playClipOnce, ViewInjectableData viewInjectableData, Func<string, string> getLocalizedText, EventSystem sourceEventSystem)
+        {
+            base.Initialize(sourceUiManager, uiCamera, playClipOnce, viewInjectableData, getLocalizedText, sourceEventSystem);
+
+            OptionsMenuViewData optionsMenuViewData = viewInjectableData as OptionsMenuViewData;
+
+            if(optionsMenuViewData != null)
+            {
+                masterVolumeSlider.UpdateSliderValue(optionsMenuViewData.MasterVolumeSaved);
+                musicVolumeSlider.UpdateSliderValue(optionsMenuViewData.MusicVolumeSaved);
+                soundEffectsVolumeSlider.UpdateSliderValue(optionsMenuViewData.SoundEffectsVolumeSaved);
+            }
+        }
 
         public override void TransitionIn(int interactableGroupId)
         {

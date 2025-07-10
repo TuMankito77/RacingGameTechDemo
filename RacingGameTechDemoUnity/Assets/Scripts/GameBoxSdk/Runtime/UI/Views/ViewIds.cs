@@ -12,6 +12,7 @@ namespace GameBoxSdk.Runtime.UI.Views
 		TrackSelection,
 		PauseMenu,
 		MessageWindow,
+		OptionsMenu,
 	}
 }
 
