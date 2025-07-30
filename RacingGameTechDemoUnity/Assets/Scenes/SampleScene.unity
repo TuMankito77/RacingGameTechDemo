@@ -501,7 +501,7 @@ MonoBehaviour:
     m_Bits: 64
   springStiffness: 30000
   damperStiffness: 3000
-  restLegnth: 0.27
+  restLegnth: 0.64
   springTravel: 0.5
   wheelRadius: 0.33
   enableDebugging: 1
@@ -615,7 +615,7 @@ Transform:
   m_GameObject: {fileID: 1117269187}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.14, z: 0}
+  m_LocalPosition: {x: 0, y: 2.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
