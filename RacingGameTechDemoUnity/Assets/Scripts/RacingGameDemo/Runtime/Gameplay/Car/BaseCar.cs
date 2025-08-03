@@ -13,6 +13,9 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
         private Transform[] rayPoints = new Transform[0];
 
         [SerializeField]
+        private Transform accelerationPoint = null;
+
+        [SerializeField]
         private LayerMask drivable = default(LayerMask);
 
         [Header("Suspension Settings")]
@@ -32,18 +35,61 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
         [SerializeField]
         private float wheelRadius = 0.33f;
 
+        [Header("Car Settings")]
+
+        [SerializeField]
+        private float acceleration = 25f;
+
+        [SerializeField]
+        private float maxSpeed = 100f;
+
+        [SerializeField]
+        private float deceleration = 10f;
+
+        [SerializeField]
+        private float steerStrength = 15f;
+
+        [SerializeField]
+        private AnimationCurve turningCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+        [SerializeField]
+        private float dragCoefficient = 1f; 
+
         [Header("Debugging")]
 
         [SerializeField]
         private bool enableDebugging = false;
 
-        float springCompression = 0;
+        [SerializeField, Min(0)]
+        private float accelerationPointLineSize = 1;
+
+        private float springCompression = 0;
+        private int[] wheelsIsGrounded = null;
+        private bool isGrounded = false;
+        private float moveInput = 0;
+        private float steerInput = 0;
+        private Vector3 currentCarLocalVelocity = Vector3.zero;
+        private float carVelocityRatio = 0;
 
         #region Unity Methods
+
+        private void Awake()
+        {
+            wheelsIsGrounded = new int[rayPoints.Length];
+        }
+
+        private void Update()
+        {
+            //Replace this so that it is controlled by GameBoxSdk's input system. 
+            GetPlayerInput();
+        }
 
         private void FixedUpdate()
         {
             Suspension();
+            GroundCheck();
+            CalculateCarVelocity();
+            Movement();
         }
 
         private void OnDrawGizmos()
@@ -57,20 +103,33 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
                     Gizmos.color = Color.green;
                     Gizmos.DrawWireSphere(rayPoint.position + (restLegnth - springCompression) * -rayPoint.up, wheelRadius);
                 }
+
+                if(accelerationPoint != null)
+                {
+                    Gizmos.color = Color.cyan;
+                    Gizmos.DrawLine(accelerationPoint.position, accelerationPoint.position + accelerationPoint.forward * accelerationPointLineSize);
+                }
             }
         }
 
         #endregion
 
+        public void Dispose()
+        {
+
+        }
+
         private void Suspension()
         {
-            foreach(Transform rayPoint in rayPoints)
+            for(int i = 0; i < rayPoints.Length; i++) 
             {
+                Transform rayPoint = rayPoints[i];
                 RaycastHit hit = default(RaycastHit);
                 float maxLength = restLegnth + springTravel;
 
                 if (Physics.Raycast(rayPoint.position, -rayPoint.up, out hit, maxLength + wheelRadius, drivable))
                 {
+                    wheelsIsGrounded[i] = 1;
                     float currentSpringLength = hit.distance - wheelRadius;
                     springCompression = restLegnth - currentSpringLength;
                     float springCompressionNormalized = (restLegnth - currentSpringLength) / springTravel;
@@ -83,15 +142,73 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
                 }
                 else
                 {
+                    wheelsIsGrounded[i] = 0;
                     Debug.DrawLine(rayPoint.position, rayPoint.position + (maxLength + wheelRadius) * -rayPoint.up, Color.green);
                 }
             }
         }
 
-
-        public void Dispose()
+        private void GroundCheck()
         {
+            int tempGroundedWheels = 0;
 
+            foreach(int wheelIsGrounded in wheelsIsGrounded)
+            {
+                tempGroundedWheels += wheelIsGrounded;
+            }
+
+            isGrounded = tempGroundedWheels > 0;
+        }
+
+        private void GetPlayerInput()
+        {
+            moveInput = Input.GetAxis("Vertical");
+
+            if(moveInput != 0)
+            {
+                Debug.Log("We are receiving horizontal input!");
+            }
+            steerInput = Input.GetAxis("Horizontal");
+        }
+
+        private void CalculateCarVelocity()
+        {
+            currentCarLocalVelocity = transform.InverseTransformDirection(carRB.linearVelocity);
+            carVelocityRatio = currentCarLocalVelocity.z / maxSpeed;
+        }
+
+        private void Movement()
+        {
+            if(isGrounded)
+            {
+                Acceleration();
+                Deceleration();
+                Turn();
+                SidewaysDrag();
+            }
+        }
+
+        private void Acceleration()
+        {
+            carRB.AddForceAtPosition(acceleration * moveInput * transform.forward, accelerationPoint.position, ForceMode.Acceleration);
+        }
+
+        private void Deceleration()
+        {
+            carRB.AddForceAtPosition(deceleration * moveInput * -transform.forward, accelerationPoint.position, ForceMode.Acceleration);
+        }
+
+        private void Turn()
+        {
+            carRB.AddTorque(steerStrength * steerInput * turningCurve.Evaluate(carVelocityRatio) * Mathf.Sign(carVelocityRatio) * transform.up, ForceMode.Acceleration);
+        }
+
+        private void SidewaysDrag()
+        {
+            float currentSidewaysSpeed = currentCarLocalVelocity.x;
+            float dragMagnitude = -currentSidewaysSpeed * dragCoefficient;
+            Vector3 dragforce = transform.right * dragMagnitude;
+            carRB.AddForceAtPosition(dragforce, carRB.worldCenterOfMass, ForceMode.Acceleration);
         }
     }
 }
