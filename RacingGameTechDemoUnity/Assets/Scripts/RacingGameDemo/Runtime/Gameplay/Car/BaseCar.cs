@@ -16,6 +16,9 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
         private Transform accelerationPoint = null;
 
         [SerializeField]
+        private Transform steeringPoint = null;
+
+        [SerializeField]
         private LayerMask drivable = default(LayerMask);
 
         [Header("Suspension Settings")]
@@ -163,11 +166,6 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
         private void GetPlayerInput()
         {
             moveInput = Input.GetAxis("Vertical");
-
-            if(moveInput != 0)
-            {
-                Debug.Log("We are receiving horizontal input!");
-            }
             steerInput = Input.GetAxis("Horizontal");
         }
 
@@ -182,7 +180,7 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
             if(isGrounded)
             {
                 Acceleration();
-                Deceleration();
+                //Deceleration();
                 Turn();
                 SidewaysDrag();
             }
@@ -200,7 +198,8 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
 
         private void Turn()
         {
-            carRB.AddTorque(steerStrength * steerInput * turningCurve.Evaluate(carVelocityRatio) * Mathf.Sign(carVelocityRatio) * transform.up, ForceMode.Acceleration);
+            carRB.AddForceAtPosition(steerStrength * steerInput * turningCurve.Evaluate(Mathf.Abs(carVelocityRatio)) * Mathf.Sign(carVelocityRatio) * transform.right, steeringPoint.position, ForceMode.Acceleration);
+            //carRB.AddTorque(steerStrength * steerInput * turningCurve.Evaluate(Mathf.Abs(carVelocityRatio)) * Mathf.Sign(carVelocityRatio) * transform.up, ForceMode.Acceleration);
         }
 
         private void SidewaysDrag()
