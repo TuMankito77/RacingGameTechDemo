@@ -165,8 +165,9 @@ MonoBehaviour:
   restLegnth: 0.73
   springTravel: 0.5
   wheelRadius: 0.63
-  acceleration: 25
-  maxSpeed: 100
+  acceleration: 50
+  maxForwardSpeed: 200
+  maxReverseSpeed: 50
   deceleration: 10
   steerStrength: 15
   turningCurve:
@@ -193,7 +194,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  dragCoefficient: 1
+  dragCoefficient: 5
+  groundLinearDamping: 0.2
+  airLinearDamping: 0.2
   enableDebugging: 1
   accelerationPointLineSize: 6.97
 --- !u!4 &175514444
@@ -213,6 +216,7 @@ Transform:
   - {fileID: 1824638864}
   - {fileID: 674217021}
   - {fileID: 803653125}
+  - {fileID: 330585546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &175514445
@@ -224,7 +228,7 @@ Rigidbody:
   m_GameObject: {fileID: 175514442}
   serializedVersion: 4
   m_Mass: 1000
-  m_Drag: 0.2
+  m_Drag: 5
   m_AngularDrag: 10
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -302,7 +306,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 37.4
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -328,12 +332,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 36.77, z: -8.18}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 95.46001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 175514444}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
@@ -518,7 +522,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &422985115
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -885,7 +889,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 500, y: 500, z: 500}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1606,7 +1610,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -7916186024098386071, guid: 2ed119667b5b0794b909f57d36cf1887, type: 3}
+  - {fileID: 2100000, guid: 282582a64ebb099479c9748291024e8f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1658,5 +1662,4 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 1659391396}
   - {fileID: 422985118}
-  - {fileID: 330585546}
   - {fileID: 175514444}
