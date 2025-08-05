@@ -44,7 +44,10 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
         private float acceleration = 25f;
 
         [SerializeField]
-        private float maxSpeed = 100f;
+        private float maxForwardSpeed = 100f;
+
+        [SerializeField]
+        private float maxReverseSpeed = 50f;
 
         [SerializeField]
         private float deceleration = 10f;
@@ -56,7 +59,13 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
         private AnimationCurve turningCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
         [SerializeField]
-        private float dragCoefficient = 1f; 
+        private float dragCoefficient = 1f;
+
+        [SerializeField, Min(0)]
+        private float groundLinearDamping = 2;
+
+        [SerializeField, Min(0)]
+        private float airLinearDamping = 0.2f;
 
         [Header("Debugging")]
 
@@ -71,7 +80,7 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
         private bool isGrounded = false;
         private float moveInput = 0;
         private float steerInput = 0;
-        private Vector3 currentCarLocalVelocity = Vector3.zero;
+        private Vector3 localVelocity = Vector3.zero;
         private float carVelocityRatio = 0;
 
         #region Unity Methods
@@ -171,40 +180,68 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
 
         private void CalculateCarVelocity()
         {
-            currentCarLocalVelocity = transform.InverseTransformDirection(carRB.linearVelocity);
-            carVelocityRatio = currentCarLocalVelocity.z / maxSpeed;
+            localVelocity = transform.InverseTransformDirection(carRB.linearVelocity);
+            carVelocityRatio = localVelocity.z / maxForwardSpeed;
         }
 
         private void Movement()
         {
+            Debug.Log($"Current Velocity: {carRB.linearVelocity.magnitude}");
             if(isGrounded)
             {
-                Acceleration();
-                //Deceleration();
-                Turn();
+                ApplyForwardAcceleration(moveInput);
+                ApplyTurnForce(steerInput);
                 SidewaysDrag();
+                carRB.linearDamping = groundLinearDamping;
+            }
+            else
+            {
+                carRB.linearDamping = airLinearDamping;
             }
         }
 
-        private void Acceleration()
+        private void ApplyForwardAcceleration(float direction)
         {
-            carRB.AddForceAtPosition(acceleration * moveInput * transform.forward, accelerationPoint.position, ForceMode.Acceleration);
+            if(direction == 0)
+            {
+                return;
+            }
+
+            Vector3 currentVelocity = transform.InverseTransformDirection(carRB.linearVelocity);
+            float currentForwardSpeed = currentVelocity.z;
+            Vector3 accelerationToApply = Vector3.zero;
+            float desiredSpeed = 0;
+            bool hasReachedDesiredSpeed = false;
+
+            if(direction > 0)
+            {
+                desiredSpeed = direction * maxForwardSpeed;
+                hasReachedDesiredSpeed = currentForwardSpeed > desiredSpeed;
+            }
+            else
+            {
+                desiredSpeed = direction * maxReverseSpeed;
+                hasReachedDesiredSpeed = currentForwardSpeed < desiredSpeed;
+            }
+
+            if (!hasReachedDesiredSpeed)
+            {
+                accelerationToApply = transform.forward * direction * acceleration * Time.deltaTime;
+            }
+
+            carRB.linearVelocity += accelerationToApply;
         }
 
-        private void Deceleration()
+        private void ApplyTurnForce(float direction)
         {
-            carRB.AddForceAtPosition(deceleration * moveInput * -transform.forward, accelerationPoint.position, ForceMode.Acceleration);
-        }
-
-        private void Turn()
-        {
-            carRB.AddForceAtPosition(steerStrength * steerInput * turningCurve.Evaluate(Mathf.Abs(carVelocityRatio)) * Mathf.Sign(carVelocityRatio) * transform.right, steeringPoint.position, ForceMode.Acceleration);
-            //carRB.AddTorque(steerStrength * steerInput * turningCurve.Evaluate(Mathf.Abs(carVelocityRatio)) * Mathf.Sign(carVelocityRatio) * transform.up, ForceMode.Acceleration);
+            //Mathf.Sign(carVelocityRatio) allows us to inver the turning rotation when the car is going backwards.
+            Vector3 forceToApply = steerStrength * direction * turningCurve.Evaluate(Mathf.Abs(carVelocityRatio)) * Mathf.Sign(carVelocityRatio) * transform.right;
+            carRB.AddForceAtPosition(forceToApply, steeringPoint.position, ForceMode.Acceleration);
         }
 
         private void SidewaysDrag()
         {
-            float currentSidewaysSpeed = currentCarLocalVelocity.x;
+            float currentSidewaysSpeed = localVelocity.x;
             float dragMagnitude = -currentSidewaysSpeed * dragCoefficient;
             Vector3 dragforce = transform.right * dragMagnitude;
             carRB.AddForceAtPosition(dragforce, carRB.worldCenterOfMass, ForceMode.Acceleration);
