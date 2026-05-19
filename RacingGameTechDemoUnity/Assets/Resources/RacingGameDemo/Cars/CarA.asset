@@ -15,6 +15,6 @@ MonoBehaviour:
   displayName: Car A
   displayNameLocKey: Name.CarA
   carPrefab: {fileID: 919132149155446097, guid: 2ed119667b5b0794b909f57d36cf1887, type: 3}
-  gameplayCar: {fileID: 6710475702753419200, guid: 759b6c55f07d3c346bd1d54f4d6f9546, type: 3}
+  gameplayCar: {fileID: 8567659786193190896, guid: e64c10b1c3da9ce47a6cce571ec07a92, type: 3}
   maxSpeed: 300
   maxAcceleration: 100
