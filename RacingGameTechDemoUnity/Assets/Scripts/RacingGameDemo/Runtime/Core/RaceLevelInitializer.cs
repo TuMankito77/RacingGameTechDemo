@@ -35,6 +35,16 @@ namespace RacingGameDemo.Runtime.Core
                 return false;
             }
 
+            GameObject respawnObject = GameObject.FindGameObjectWithTag("Respawn");
+            
+            if(respawnObject == null)
+            {
+                return false;
+            }
+
+            Vector3 carSpawnPosition = respawnObject.transform.position;
+            gameplayCarInstance = GameObject.Instantiate(gameplayCarPrefab, carSpawnPosition, Quaternion.identity);
+
             Camera gameplayRenderingCameraPrefab = await contentLoader.LoadAsset<Camera>(GAMEPLAY_RENDERING_CAMERA_PATH);
 
             if(gameplayRenderingCameraPrefab == null)
@@ -42,9 +52,8 @@ namespace RacingGameDemo.Runtime.Core
                 return false;
             }
 
-            gameplayRenderingCamera = GameObject.Instantiate(gameplayRenderingCameraPrefab);
+            gameplayRenderingCamera = GameObject.Instantiate(gameplayRenderingCameraPrefab, gameplayCarInstance.CameraSocket);
             cameraStackingManager.AddCameraToStackAtBottom(gameplayRenderingCamera);
-            gameplayCarInstance = GameObject.Instantiate(gameplayCarPrefab);
             //TO-DO: Place the car at the start of the track.
             //TO-DO: Display the HUD view.
             return true;

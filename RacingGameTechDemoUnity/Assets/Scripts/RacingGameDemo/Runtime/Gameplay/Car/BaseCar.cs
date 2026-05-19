@@ -67,6 +67,9 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
         [SerializeField, Min(0)]
         private float airLinearDamping = 0.2f;
 
+        [SerializeField]
+        private Transform cameraSocket = null;
+
         [Header("Debugging")]
 
         [SerializeField]
@@ -82,6 +85,8 @@ namespace RacingGameDemo.Runtime.Gameplay.Car
         private float steerInput = 0;
         private Vector3 localVelocity = Vector3.zero;
         private float carVelocityRatio = 0;
+
+        public Transform CameraSocket => cameraSocket;
 
         #region Unity Methods
 
